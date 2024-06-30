@@ -1,0 +1,47 @@
+<div class="max-w-screen-lg mx-auto p-6">
+    <h1 class="text-2xl font-bold text-center mb-4">Lista de Técnicos</h1>
+    <div class="flex justify-end mb-4">
+        <!--
+        <div class="flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 space-x-2">
+            <i class="bi bi-search text-gray-600 text-lg"></i>
+            <input type="text" id="buscar" name="buscar" placeholder="Buscar" class="w-40 outline-none text-sm font-medium text-gray-900">
+            <select class="bg-white border border-gray-300 text-gray-900 py-2 px-4 rounded-lg outline-none text-sm font-medium">
+                <option value="nombre">Buscar por Nombre</option>
+                <option value="correo">Buscar por Correo</option>
+            </select>
+        </div>-->
+    </div>
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md w-11/12 pr-16">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre(s)</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apellidos</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Domicilio</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Password</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let tecnico of tecnicos">
+                    <td class="px-6 py-4 whitespace-normal break-words">{{ tecnico.id }}</td>
+                    <td class="px-6 py-4 whitespace-normal break-words">{{ tecnico.nombre }}</td>
+                    <td class="px-6 py-4 whitespace-normal break-words">{{ tecnico.apellido }}</td>
+                    <td class="px-6 py-4 whitespace-normal break-words">{{ tecnico.telefono }}</td>
+                    <td class="px-6 py-4 whitespace-normal break-words">{{ tecnico.domicilio }}</td>
+                    <td class="px-6 py-4 whitespace-normal break-words">{{ tecnico.correo }}</td>
+                    <td class="px-6 py-4 whitespace-normal break-words">{{ tecnico.password }}</td>
+                    <td class="px-6 py-4 whitespace-normal break-words flex space-x-2">
+                        <a href="" class="text-blue-600 hover:text-blue-800 flex items-center">
+                            <i class="bi bi-pencil mr-1"></i> Editar
+                        </a>
+                        <a href="" class="text-red-600 hover:text-red-800 flex items-center">
+                            <i class="bi bi-x-circle mr-1"></i> Inhabilitar
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</div>

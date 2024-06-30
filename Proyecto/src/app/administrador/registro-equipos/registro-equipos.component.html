@@ -1,0 +1,90 @@
+<div class="flex min-h-full flex-col justify-center px-6 py-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Registro de Equipos</h2>
+    </div>
+  
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form [formGroup]="registroequipos" class="space-y-6" (ngSubmit)="registro()">
+        <div>
+          <label for="idequipo" class="block text-sm font-medium leading-6 text-gray-900">Id de registro</label>
+          <div class="mt-2">
+            <input formControlName="idequipo" type="text" id="idequipo" placeholder="Id empleado" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+          </div>
+        </div>
+        <div>
+          <label for="marca" class="block text-sm font-medium leading-6 text-gray-900">Marca</label>
+          <div class="mt-2">
+            <input formControlName="marca" type="text" id="marca" placeholder="Marca del equipo" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <div *ngIf="registroequipos.controls['marca'].invalid && registroequipos.controls['marca'].touched" class="text-red-500 text-sm mt-1">
+              {{ registroequipos.controls['marca'].hasError('required') ? 'La marca es requerida.' : 'Solo se permiten letras y espacios.' }}
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="modelo" class="block text-sm font-medium leading-6 text-gray-900">Modelo</label>
+          <div class="mt-2">
+            <input formControlName="modelo" type="text" id="modelo" placeholder="Modelo del equipo" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <div *ngIf="registroequipos.controls['modelo'].invalid && registroequipos.controls['modelo'].touched" class="text-red-500 text-sm mt-1">
+              {{ registroequipos.controls['modelo'].hasError('required') ? 'El modelo de el equipo es requerido' : 'Solo se permiten letras y espacios.' }}
+            </div>
+          </div>
+        </div>
+        <div>
+            <label for="tipomantenimiento" class="block text-sm font-medium leading-6 text-gray-900">Tipo de Mantenimiento</label>
+            <div class="mt-2">
+              <select formControlName="tipomantenimiento" id="tipomantenimiento" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                <option value="" disabled selected>--Seleccione el tipo de mantenimiento--</option>
+                <option value="1">Correctivo</option>
+                <option value="2">Preventivo</option>
+              </select>
+              <div *ngIf="registroequipos.controls['tipomantenimiento'].invalid && registroequipos.controls['tipomantenimiento'].touched" class="text-red-500 text-sm mt-1">
+                El tipo de mantenimiento es requerido.
+              </div>
+            </div>
+        </div>
+        <div>
+            <label for="ram" class="block text-sm font-medium leading-6 text-gray-900">Memoria Ram</label>
+            <div class="mt-2">
+              <input formControlName="ram" type="text" id="ram" placeholder="Memoria Ram del equipo" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+              <div *ngIf="registroequipos.controls['ram'].invalid && registroequipos.controls['ram'].touched" class="text-red-500 text-sm mt-1">
+                La capacidad de memmoria ram es requerida
+              </div>
+            </div>
+        </div>
+        <div>
+            <label for="procesador" class="block text-sm font-medium leading-6 text-gray-900">Procesador</label>
+            <div class="mt-2">
+              <input formControlName="procesador" type="text" id="procesador" placeholder="Procesador del equipo" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+              <div *ngIf="registroequipos.controls['procesador'].invalid && registroequipos.controls['procesador'].touched" class="text-red-500 text-sm mt-1">
+                {{ registroequipos.controls['procesador'].hasError('required') ? 'El tipo de procesador es requerido' : 'El nombre del procesador no puede ser tan pequeño' }}
+              </div>
+            </div>
+        </div>
+        <div>
+            <label for="almacenamiento" class="block text-sm font-medium leading-6 text-gray-900">Almacenamiento</label>
+            <div class="mt-2">
+              <input formControlName="almacenamiento" type="text" id="almacenamiento" placeholder="Almacenamiento del equipo" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+              <div *ngIf="registroequipos.controls['almacenamiento'].invalid && registroequipos.controls['almacenamiento'].touched" class="text-red-500 text-sm mt-1">
+                El almacenamiento es requerido
+              </div>
+            </div>
+        </div>
+        <div>
+            <label for="tipo" class="block text-sm font-medium leading-6 text-gray-900">Tipo de equipo</label>
+            <div class="mt-2">
+                <select formControlName="tipo" id="tipo" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                  <option value="" disabled selected>--Selecciona un tipo de equipo--</option>
+                  <option value="1">Escritorio</option>
+                  <option value="2">Portatil</option>
+                </select>
+                <div *ngIf="registroequipos.controls['tipo'].invalid && registroequipos.controls['tipo'].touched" class="text-red-500 text-sm mt-1">
+                  Selecciona un tipo de equipo
+                </div>
+            </div>
+        </div>          
+        <div>
+          <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" >Registrar Equipo</button>
+        </div>
+      </form>
+    </div>
+  </div>  

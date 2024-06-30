@@ -1,0 +1,82 @@
+<div class="flex min-h-full flex-col justify-center px-6 py-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Registro de Técnicos</h2>
+    </div>
+  
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form [formGroup]="Regtec" class="space-y-6" (ngSubmit)="registro()">
+        <div>
+          <label for="numempleado" class="block text-sm font-medium leading-6 text-gray-900">Número de Empleado</label>
+          <div class="mt-2">
+            <input formControlName="numempleado" type="text" id="numempleado" placeholder="Id empleado" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+          </div>
+        </div>
+        <div>
+          <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Nombre(s)</label>
+          <div class="mt-2">
+            <input formControlName="name" type="text" id="name" placeholder="Nombre(s)" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <div *ngIf="Regtec.controls['name'].invalid && Regtec.controls['name'].touched" class="text-red-500 text-sm mt-1">
+              {{ Regtec.controls['name'].hasError('required') ? 'El nombre es requerido.' : 'Solo se permiten letras y espacios.' }}
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="apellido" class="block text-sm font-medium leading-6 text-gray-900">Apellidos</label>
+          <div class="mt-2">
+            <input formControlName="apellido" type="text" id="apellido" placeholder="Apellidos" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <div *ngIf="Regtec.controls['apellido'].invalid && Regtec.controls['apellido'].touched" class="text-red-500 text-sm mt-1">
+              {{ Regtec.controls['apellido'].hasError('required') ? 'El apellido es requerido.' : 'Solo se permiten letras y espacios.' }}
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Correo electrónico</label>
+          <div class="mt-2">
+            <input formControlName="email" type="email" id="email" placeholder="alguien@example.com" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <div *ngIf="Regtec.controls['email'].invalid && Regtec.controls['email'].touched" class="text-red-500 text-sm mt-1">
+              {{ Regtec.controls['email'].hasError('required') ? 'El correo electrónico es requerido.' : 'El correo electrónico no es válido.' }}
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Contraseña</label>
+          <div class="mt-2">
+            <input formControlName="password" type="password" id="password" placeholder="Contraseña" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <div *ngIf="Regtec.controls['password'].invalid && Regtec.controls['password'].touched" class="text-red-500 text-sm mt-1">
+              {{ Regtec.controls['password'].hasError('required') ? 'La contraseña es requerida.' : 'La contraseña debe tener un minimo de 8 caracteres.' }}
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="confipassword" class="block text-sm font-medium leading-6 text-gray-900">Confirmar Contraseña</label>
+          <div class="mt-2">
+            <input formControlName="confipassword" type="password" id="confipassword" placeholder="Confirmar Contraseña" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <div *ngIf="Regtec.hasError('notSame') && Regtec.controls['confipassword'].touched" class="text-red-500 text-sm mt-1">
+              Las contraseñas no coinciden.
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="telefono" class="block text-sm font-medium leading-6 text-gray-900">Teléfono</label>
+          <div class="mt-2">
+            <input formControlName="telefono" type="tel" id="telefono" placeholder="Número de Teléfono" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <div *ngIf="Regtec.controls['telefono'].invalid && Regtec.controls['telefono'].touched" class="text-red-500 text-sm mt-1">
+              {{ Regtec.controls['telefono'].hasError('required') ? 'El número de teléfono es requerido.' : 'Debe ser un número de 10 dígitos.' }}
+            </div>
+          </div>
+        </div>
+        <div>
+          <label for="direccion" class="block text-sm font-medium leading-6 text-gray-900">Dirección</label>
+          <div class="mt-2">
+            <input formControlName="direccion" type="text" id="direccion" placeholder="Dirección" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            <div *ngIf="Regtec.controls['direccion'].invalid && Regtec.controls['direccion'].touched" class="text-red-500 text-sm mt-1">
+              La dirección es requerida.
+            </div>
+          </div>
+        </div>
+        <div>
+          <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" >Registrar Nuevo Técnico</button>
+        </div>
+      </form>
+    </div>
+  </div>  

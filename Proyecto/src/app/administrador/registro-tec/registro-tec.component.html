@@ -75,6 +75,17 @@
           </div>
         </div>
         <div>
+          <label class="block text-sm font-medium leading-6 text-gray-900" for="file_input">Subir Foto</label>
+          <input 
+            type="file" 
+            (change)="onFileSelected($event)" 
+            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+            id="file_input"
+            aria-describedby="file_input_help"
+          >
+          <p class="mt-1 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+        </div>
+        <div>
           <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" >Registrar Nuevo Técnico</button>
         </div>
       </form>

@@ -1,0 +1,14 @@
+
+#modal-asignar2 {
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform: translateY(100%);
+    opacity: 0;
+    /* Ajuste del color de fondo para overlay */
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  #modal-asignar2.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  

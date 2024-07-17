@@ -12,7 +12,7 @@ import { EquiposlistComponent } from './administrador/equiposlist/equiposlist.co
 import { ErroradminComponent } from './administrador/erroradmin/erroradmin.component';
 import { IniciousuarioComponent } from './tecnico/iniciousuario/iniciousuario.component';
 import { RecoverpasswordComponent } from './recoverpassword/recoverpassword.component';
-import { AsignarComponent } from './administrador/asignar/asignar.component';
+import { ListaAsignadosComponent } from './administrador/lista-asignados/lista-asignados.component';
 
 export const routes: Routes = [
     { path: 'Login', component: LoginComponent },
@@ -32,7 +32,7 @@ export const routes: Routes = [
         { path: 'registroEquipos', component: RegistroEquiposComponent },
         { path: 'listaTecnicos', component: TecnicoslistComponent },
         { path: 'listaEquipos', component: EquiposlistComponent },
-        { path: 'asignar', component: AsignarComponent },
+        { path: 'lista-asignados', component: ListaAsignadosComponent},
 
         { path: '**', component: ErroradminComponent },
     ],},

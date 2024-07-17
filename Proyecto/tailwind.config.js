@@ -4,7 +4,18 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      transitionProperty: {
+        'height': 'height',
+        'spacing': 'margin, padding',
+      },
+    },
+  },
+  variants: {
+    extend: {
+      display: ['responsive', 'group-hover', 'group-focus'],
+      visibility: ['group-hover', 'group-focus'],
+    },
   },
   plugins: [],
 }

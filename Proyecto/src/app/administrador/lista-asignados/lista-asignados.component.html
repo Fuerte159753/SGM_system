@@ -1,0 +1,48 @@
+<div class="max-w-screen-lg mx-auto p-6">
+    <h1 class="text-2xl font-bold text-center mb-4">Equipos Asignados a tecnicos</h1>
+    <div class="flex justify-end mb-4">
+        <!--
+        <div class="flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 space-x-2">
+            <i class="bi bi-search text-gray-600 text-lg"></i>
+            <input type="text" id="buscar" name="buscar" placeholder="Buscar" class="w-40 outline-none text-sm font-medium text-gray-900">
+            <select class="bg-white border border-gray-300 text-gray-900 py-2 px-4 rounded-lg outline-none text-sm font-medium">
+                <option value="nombre">Buscar por Nombre</option>
+                <option value="correo">Buscar por Correo</option>
+            </select>
+        </div>-->
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="overflow-x-auto">
+          <table class="min-w-full bg-white">
+            <thead>
+              <tr>
+                <th class="py-2 px-4 border-b border-gray-200">Equipo</th>
+                <th class="py-2 px-4 border-b border-gray-200">Técnico</th>
+                <th class="py-2 px-4 border-b border-gray-200">Estatus</th>
+                <th class="py-2 px-4 border-b border-gray-200">Comentarios Técnico</th>
+                <th class="py-2 px-4 border-b border-gray-200">Comentarios Admin</th>
+                <th class="py-2 px-4 border-b border-gray-200">Fecha Actualización</th>
+                <th class="py-2 px-4 border-b border-gray-200">Estatus Anterior</th>
+                <th class="py-2 px-4 border-b border-gray-200">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let equipo of equiposAsignados" class="border-b border-gray-200">
+                <td class="py-2 px-4">{{ equipo.id_equipo.marca }} {{ equipo.id_equipo.modelo }}</td>
+                <td class="py-2 px-4">{{ equipo.id_tecnico.nombre }} {{ equipo.id_tecnico.apellidos }}</td>
+                <td class="py-2 px-4">{{ equipo.estatus }}</td>
+                <td class="py-2 px-4">{{ equipo.comentarios_Tecnico }}</td>
+                <td class="py-2 px-4">{{ equipo.comentarios_Admin }}</td>
+                <td class="py-2 px-4">{{ equipo.estatus_updated_at | date:'short' }}</td>
+                <td class="py-2 px-4">{{ equipo.estatus_anterior }}</td>
+                <td class="py-2 px-4">
+                    <span class="text-teal-500 hover:cursor-pointer">ver mas</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+</div>

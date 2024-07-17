@@ -4,6 +4,8 @@ import { ServiceService } from '../../service/service.service';
 import { FormGroup, FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
 
 @Component({
   selector: 'app-registro-tec',
@@ -14,7 +16,8 @@ import { Router } from '@angular/router';
 })
 export class RegistroTecComponent implements OnInit {
   Regtec: FormGroup;
-
+  private notyf: Notyf;
+  private selectedFile: File | null = null;
   constructor( private service:ServiceService, private fb:FormBuilder, private rote:Router ){
     this.Regtec = this.fb.group({
       numempleado: ['', [Validators.required]],
@@ -23,9 +26,19 @@ export class RegistroTecComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confipassword: ['', Validators.required],
-      telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      telefono: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(14)]],
       direccion: ['', Validators.required]
     }, { validator: this.checkPasswords }); 
+    
+
+    this.notyf = new Notyf({
+      duration: 2000, // Duración de la notificación en milisegundos
+      position: {
+        x: 'center',
+        y: 'bottom', // Posición en la parte inferior central
+      },
+      dismissible: true // Permite al usuario cerrar la notificación
+    });
   }
   ngOnInit(): void { 
     this.Regtec.reset();
@@ -39,18 +52,27 @@ export class RegistroTecComponent implements OnInit {
         this.Regtec.get('numempleado')?.setValue(formattedId);
       },
       error => {
-        Swal.fire('Error', 'No se pudo obtener el número de empleado. Inténtalo más tarde.', 'error');
+        //Swal.fire('Error', 'No se pudo obtener el número de empleado. Inténtalo más tarde.', 'error');
+        this.notyf.error('No se pudo obtener el número de empleado. Inténtalo más tarde.');
         this.rote.navigate(['/WelcomeAdmin/inicio']);
       }
     );
   }
+
   formatEmployeeId(id: number): string {
     return 'RT' + id.toString().padStart(4, '0');
   }  
+
   checkPasswords(group: FormGroup) {
     const pass = group.get('password')?.value;
     const confirmPass = group.get('confipassword')?.value;
     return pass === confirmPass ? null : { notSame: true };
+  }
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
   }
   registro() {
     if (this.Regtec.valid) {
@@ -62,6 +84,11 @@ export class RegistroTecComponent implements OnInit {
       formData.append('password', this.Regtec.get('password')?.value);
       formData.append('telefono', this.Regtec.get('telefono')?.value);
       formData.append('direccion', this.Regtec.get('direccion')?.value);
+      if (this.selectedFile) {
+        // Generar nombre de archivo
+        const nombreArchivo = `foto_${this.Regtec.get('name')?.value}_${this.Regtec.get('apellido')?.value}.jpg`;
+        formData.append('foto', this.selectedFile, nombreArchivo);
+      }
 
       this.service.regtec(formData).subscribe(
         response => {

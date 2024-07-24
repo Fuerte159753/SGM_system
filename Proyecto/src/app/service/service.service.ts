@@ -45,5 +45,11 @@ export class ServiceService {
   obtenerlistaAsignados(){
     return this.http.get<any>(this.urll + 'listasignacion');
   }
+  actualizarTecnico(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.urll + 'update/'}${id}`, data);
+  }
+  inabilitarTec(id: any){
+    return this.http.delete<any>(`${this.urll + 'inhabilitar/'}${id}`);
+  }
   //user
 }

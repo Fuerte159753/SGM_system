@@ -26,6 +26,7 @@ class Tecnico extends Authenticatable
         'domicilio',
         'correo',
         'password',
+        'estado',
         'foto',
         'token',
     ];

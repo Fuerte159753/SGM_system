@@ -73,7 +73,7 @@ class AdminController extends Controller
     public function showTecnicos()
     {
         try {
-       $tecnicos = Tecnico::select('id', 'nombre', 'apellidos', 'telefono', 'domicilio', 'correo','foto')->get();
+       $tecnicos = Tecnico::select('id', 'nombre', 'apellidos', 'telefono', 'domicilio', 'correo','estado','foto')->get();
             return response()->json([
                 'data' => $tecnicos
             ], 200);
@@ -117,6 +117,7 @@ class AdminController extends Controller
         $tecnico->password = Hash::make($request->password);
         $tecnico->telefono = $request->telefono;
         $tecnico->domicilio = $request->direccion;
+        $tecnico->estado = 1;
         $tecnico->foto = false;
         $tecnico->token = Str::random(20);
         if ($request->hasFile('foto')) {
@@ -138,13 +139,38 @@ class AdminController extends Controller
             ], 500);
         }
     }
-    //>>>>>>>>>>>>>      Falta implementar\\\
-    public function inabilitarTecnico()
+    public function inabilitarTecnico($id)
     {
+        $tecnico = Tecnico::find($id);
+    
+        if (!$tecnico) {
+            return response()->json(['message' => 'Técnico no encontrado.'], 404);
+        }
+        $tecnico->estado = $tecnico->estado == 1 ? 0 : 1;
+        $tecnico->save();
+    
+        return response()->json(['message' => 'Estado del técnico actualizado con éxito.']);
     }
-    //>>>>>>>>>>>>>      Falta implementar\\\
-    public function updateTec()
+    public function updateTec(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'telefono' => 'required|string|min:10',
+            'domicilio' => 'required|string|max:255',
+            'correo' => 'required|email|ends_with:@gmail.com,@hotmail.com,@outlook.com',
+        ]);
+        $tecnico = Tecnico::find($id);
+    
+        if (!$tecnico) {
+            return response()->json(['message' => 'Técnico no encontrado.'], 404);
+        }
+        $tecnico->update($validatedData);
+    
+        return response()->json(['message' => 'Técnico actualizado con éxito.']);
+    }
+    public function searchTec(Request $request){
+        
     }
     //Equipos
     public function countEquipos()

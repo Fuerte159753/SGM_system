@@ -21,6 +21,7 @@ class CreateTecnicosTable extends Migration
             $table->string('domicilio', 100);
             $table->string('correo', 100)->unique();
             $table->string('password', 255);
+            $table->string('estado', 1);
             $table->string('foto', 255)->nullable();
             $table->string('token', 100)->nullable(); // Nueva columna 'token'.
             $table->timestamps(); // Añade columnas created_at y updated_at.

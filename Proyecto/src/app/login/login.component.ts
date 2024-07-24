@@ -25,9 +25,7 @@ export class LoginComponent implements OnInit {
   }
   ngOnInit():void{
     this.Loginform.reset();
-
   }
-
   login() {
     if (this.Loginform.valid) {
       const loginData = this.Loginform.value;

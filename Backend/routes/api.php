@@ -14,8 +14,9 @@ Route::post('/admin/login',[AdminController::class, 'login']);
 Route::get('/admin/count', [AdminController::class, 'countTecnicos']);
 Route::get('/admin/show', [AdminController::class, 'showTecnicos']);
 Route::post('/admin/newT', [AdminController::class, 'newTecnico']);
-Route::delete('/admin/inhabilitar', [AdminController::class, 'inabilitarTecnico']);//falta implementar
-Route::put('/admin/update', [AdminController::class, 'updateTec']);//falta implementar
+Route::delete('/admin/inhabilitar/{id}', [AdminController::class, 'inabilitarTecnico']);
+Route::put('/admin/update/{id}', [AdminController::class, 'updateTec']);
+Route::get('/admin/search/{data}', [AdminController::class, 'searchTec']);
 /* Equipos */
 Route::get('/admin/countEq', [AdminController::class, 'countEquipos']);
 Route::post('/admin/newE', [AdminController::class, 'newEquipo']);

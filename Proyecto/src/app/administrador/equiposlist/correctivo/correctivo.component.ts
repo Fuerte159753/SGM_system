@@ -75,7 +75,6 @@ export class CorrectivoComponent implements OnInit {
     this.isModalOpen = true;
     const formattedId = this.equipoSeleccionado.id;
     this.asignarquipo.get('id_equipo')?.setValue(formattedId);
-    this
     setTimeout(() => {
       const modal = document.getElementById('modal-asignar');
       modal?.classList.add('show');

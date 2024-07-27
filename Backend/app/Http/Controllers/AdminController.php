@@ -15,50 +15,107 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
-    public function login(request $request)
+     //GRAFICAS
+    public function graficaequipos()
     {
+        // Contar el número total de equipos
+        $totalEquipos = Equipo::count();
+
+        // Contar el número total de equipos asignados
+        $totalEquiposAsignados = EquipoAsignado::count();
+
+        // Calcular el número de equipos no asignados
+        $equiposNoAsignados = $totalEquipos - $totalEquiposAsignados;
+
+        // Retornar los datos como una respuesta JSON
+        return response()->json([
+            'totalEquipos' => $totalEquipos,
+            'totalEquiposAsignados' => $totalEquiposAsignados,
+            'equiposNoAsignados' => $equiposNoAsignados
+        ]);
+    }
+    public function graficatecnico()
+    {
+        // Obtén todos los técnicos
+        $totalTecnicos = Tecnico::count();
+        
+        // Obtén todos los técnicos habilitados
+        $habilitados = Tecnico::where('estado', 1)->count();
+        
+        // Obtén todos los técnicos inhabilitados
+        $inhabilitados = Tecnico::where('estado', 0)->count();
+        
+        // Prepara los datos para el gráfico
+        $data = [
+            'totalTecnicos' => $totalTecnicos,
+            'habilitados' => $habilitados,
+            'inhabilitados' => $inhabilitados
+        ];
+
+        return response()->json($data);
+    }
+     //FIN GRAFICAS
+     public function login(Request $request)
+     {
          // Validar los datos del formulario
          $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:8',
-        ]);
-        // Obtener los datos del formulario
-        $email = $request->input('email');
-        $password = $request->input('password');
-
-        try {
-            $admin = Administrador::where('correo', $email)->first();
-            if ($admin && Hash::check($password, $admin->password)) {
-                return response()->json([
-                    'message' => 'Inicio de sesión exitoso',
-                    'status' => 'success',
-                    'user' => 1,
-                    'id' => $admin->id,
-                    'name' => $admin->nombre,
-                ], 200);
-            }
-            $tecnico = Tecnico::where('correo', $email)->first();
-            if ($tecnico && Hash::check($password, $tecnico->password)) {
-                return response()->json([
-                    'message' => 'Inicio de sesión exitoso',
-                    'status' => 'success',
-                    'user' => 2,
-                    'id' => $tecnico->id,
-                    'name' => $tecnico->nombre,
-                ], 200);
-            }
-            return response()->json([
-                'message' => 'Verifica tus datos',
-                'status' => 'error',
-            ], 401);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error al intentar iniciar sesión',
-                'status' => 'error',
-                'details' => $e->getMessage(),
-            ], 500);
-        }
-    }
+             'email' => 'required|email',
+             'password' => 'required|string|min:8',
+         ]);
+     
+         // Obtener los datos del formulario
+         $email = $request->input('email');
+         $password = $request->input('password');
+     
+         try {
+             $admin = Administrador::where('correo', $email)->first();
+             if ($admin) {
+                 if (Hash::check($password, $admin->password)) {
+                     return response()->json([
+                         'message' => 'Inicio de sesión exitoso',
+                         'status' => 'success',
+                         'user' => 1,
+                         'id' => $admin->id,
+                         'name' => $admin->nombre,
+                     ], 200);
+                 } else {
+                     return response()->json([
+                         'message' => 'Contraseña incorrecta',
+                         'status' => 'error',
+                     ],);
+                 }
+             }
+     
+             $tecnico = Tecnico::where('correo', $email)->first();
+             if ($tecnico) {
+                 if (Hash::check($password, $tecnico->password)) {
+                     return response()->json([
+                         'message' => 'Inicio de sesión exitoso',
+                         'status' => 'success',
+                         'user' => 2,
+                         'id' => $tecnico->id,
+                         'name' => $tecnico->nombre,
+                     ], 200);
+                 } else {
+                     return response()->json([
+                         'message' => 'Contraseña incorrecta',
+                         'status' => 'error',
+                     ],);
+                 }
+             }
+     
+             return response()->json([
+                 'message' => 'Correo no encontrado',
+                 'status' => 'error',
+             ], 404);
+         } catch (\Exception $e) {
+             return response()->json([
+                 'message' => 'Error al intentar iniciar sesión',
+                 'status' => 'error',
+                 'details' => $e->getMessage(),
+             ],);
+         }
+     }     
     //Tecnicos
     public function countTecnicos()
     {
@@ -395,6 +452,37 @@ class AdminController extends Controller
             return response()->json([
                 'message' => 'Error al obtener los equipos asignados',
                 'details' => $e->getMessage()
+            ], 500);
+        }
+    }
+    //perfil\\\
+    public function getAdminById($id)
+    {
+        try {
+            $admin = Administrador::find($id);
+            if ($admin) {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => [
+                        'nombre' => $admin->nombre,
+                        'apellidos' => $admin->apellidos,
+                        'telefono' => $admin->telefono,
+                        'domicilio' => $admin->domicilio,
+                        'correo' => $admin->correo,
+                        'foto' => $admin->foto,
+                    ],
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Administrador no encontrado',
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al obtener los datos del administrador',
+                'details' => $e->getMessage(),
             ], 500);
         }
     }

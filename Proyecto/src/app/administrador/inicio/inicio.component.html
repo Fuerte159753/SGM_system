@@ -2,31 +2,91 @@
   <p class="text-lg font-bold text-gray-900 mb-4">{{ Fecha() }}</p>
 </div>
 
+<div class="flex justify-center space-x-4 p-6">
+  <div class="relative border border-stone-300 shadow-lg p-4 bg-white rounded-lg">
+    <h1 class="text-2xl text-center mb-4">Equipos</h1>
+    <ngx-charts-pie-chart
+      [view]="view"
+      [scheme]="colorSchemeEquipos"
+      [results]="pieChartDataEquipos"
+      [explodeSlices]="explodeSlices"
+      [labels]="showLabels"
+      [doughnut]="doughnut">
+    </ngx-charts-pie-chart>
 
-<div>
-  <!-- Botones para mostrar diferentes tipos de notificaciones -->
-  <button (click)="showNotification('success')" class="bg-green-500 text-white px-4 py-2 rounded-md m-2">success</button>
-  <button (click)="showNotification('error')" class="bg-red-500 text-white px-4 py-2 rounded-md m-2">Error</button>
-  <button (click)="showNotification('warning')" class="bg-yellow-500 text-white px-4 py-2 rounded-md m-2">Warning</button>
-  <button (click)="showNotification('info')" class="bg-blue-500 text-white px-4 py-2 rounded-md m-2">Info</button>
+    <div *ngIf="showLegend" class="absolute top-0 right-0 p-4 bg-gray-600 text-white rounded-lg text-xs mr-3 mt-3">
+      <div class="flex flex-col space-y-2">
+        <div class="flex items-center">
+          <span class="block w-4 h-4 rounded-full mr-2" [ngStyle]="{'background-color': colorSchemeEquipos.domain[0]}"></span>
+          Asignados: {{ equiposAsignados }}
+        </div>
+        <div class="flex items-center">
+          <span class="block w-4 h-4 rounded-full mr-2" [ngStyle]="{'background-color': colorSchemeEquipos.domain[1]}"></span>
+          No Asignados: {{ equiposNoAsignados }}
+        </div>
+        <div class="flex items-center">
+          <span class="block w-4 h-4 rounded-full mr-2" [ngStyle]="{'background-color': '#000'}"></span>
+          Total Equipos: {{ totalEquipos }}
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <!-- Notificación con animaciones -->
-  <div *ngIf="isVisible" [ngClass]="animationClass" class="fixed top-4 right-4 w-full max-w-sm p-4 bg-white rounded-lg shadow-lg ring-1 ring-gray-200">
-    <div class="flex items-start">
-      <div class="flex-shrink-0">
-        <i [ngClass]="currentIcon.class" class="h-6 w-6"></i>
-      </div>
-      <div class="ml-3 w-0 flex-1 pt-0.5">
-        <p class="text-sm font-medium text-gray-900">{{ currentIcon.noty}}</p>
-        <p class="mt-1 text-sm text-gray-500">{{ currentIcon.message }}</p>
-      </div>
-      <div class="ml-4 flex-shrink-0 flex">
-        <button (click)="closeNotification()" class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          <span class="sr-only">Close</span>
-          <i class="bi bi-x-lg h-5 w-5"></i>
-        </button>
+  <div class="relative border border-stone-300 shadow-lg p-4 bg-white rounded-lg">
+    <h1 class="text-2xl text-center mb-4">Técnicos</h1>
+    <ngx-charts-pie-chart
+      [view]="view"
+      [scheme]="colorSchemeTecnicos"
+      [results]="pieChartDataTecnicos"
+      [explodeSlices]="explodeSlices"
+      [labels]="showLabels"
+      [doughnut]="doughnut">
+    </ngx-charts-pie-chart>
+
+    <div *ngIf="showLegend" class="absolute top-0 right-0 p-4 bg-gray-600 text-white rounded-lg text-xs mr-3 mt-3">
+      <div class="flex flex-col space-y-2">
+        <div class="flex items-center">
+          <span class="block w-4 h-4 rounded-full mr-2" [ngStyle]="{'background-color': colorSchemeTecnicos.domain[0]}"></span>
+          Habilitados: {{ habilitados }}
+        </div>
+        <div class="flex items-center">
+          <span class="block w-4 h-4 rounded-full mr-2" [ngStyle]="{'background-color': colorSchemeTecnicos.domain[1]}"></span>
+          Inhabilitados: {{ inhabilitados }}
+        </div>
+        <div class="flex items-center">
+          <span class="block w-4 h-4 rounded-full mr-2" [ngStyle]="{'background-color': '#000'}"></span>
+          Total Técnicos: {{ habilitados + inhabilitados }}
+        </div>
       </div>
     </div>
   </div>
 </div>
 
+<div class="relative border border-stone-500 shadow-lg p-4 bg-white rounded-lg">
+  <h1 class="text-2xl text-center mb-4">Equipos asignados</h1>
+  <ngx-charts-pie-chart
+    [view]="view"
+    [scheme]="colorSchemeEquipos"
+    [results]="pieChartDataEquipos"
+    [explodeSlices]="explodeSlices"
+    [labels]="showLabels"
+    [doughnut]="doughnut">
+  </ngx-charts-pie-chart>
+
+  <div *ngIf="showLegend" class="absolute top-0 right-0 p-4 bg-gray-600 text-white rounded-lg text-xs">
+    <div class="flex flex-col space-y-2">
+      <div class="flex items-center">
+        <span class="block w-4 h-4 rounded-full mr-2" [ngStyle]="{'background-color': colorSchemeEquipos.domain[0]}"></span>
+        Asignados: {{ equiposAsignados }}
+      </div>
+      <div class="flex items-center">
+        <span class="block w-4 h-4 rounded-full mr-2" [ngStyle]="{'background-color': colorSchemeEquipos.domain[1]}"></span>
+        No Asignados: {{ equiposNoAsignados }}
+      </div>
+      <div class="flex items-center">
+        <span class="block w-4 h-4 rounded-full mr-2" [ngStyle]="{'background-color': '#000'}"></span>
+        Total Equipos: {{ totalEquipos }}
+      </div>
+    </div>
+  </div>
+</div>

@@ -23,6 +23,7 @@ class CreateEquiposTable extends Migration
             $table->string('procesador', 100);
             $table->string('almacenamiento', 7);
             $table->tinyInteger('tipo');
+            $table->string('estado', 1);
             $table->string('comentarios');
             $table->timestamps(); // Añade columnas created_at y updated_at.
         });

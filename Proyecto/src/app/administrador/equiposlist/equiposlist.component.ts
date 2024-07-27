@@ -14,5 +14,21 @@ import { PreventivoComponent } from './preventivo/preventivo.component';
   styleUrl: './equiposlist.component.css'
 })
 export class EquiposlistComponent {
+  currentSlide = 0;
+  totalSlides = 2; // Ajusta esto según la cantidad de elementos en el carrusel
 
+  prevSlide() {
+    this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+    this.updateSlidePosition();
+  }
+
+  nextSlide() {
+    this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+    this.updateSlidePosition();
+  }
+
+  updateSlidePosition() {
+    const carouselInner = document.querySelector('.carousel-inner') as HTMLElement;
+    carouselInner.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+  }
 }

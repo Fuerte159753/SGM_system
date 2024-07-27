@@ -1,3 +1,23 @@
-
-<app-preventivo></app-preventivo>
-<app-correctivo></app-correctivo>
+<div id="carousel" class="relative w-full h-screen overflow-hidden">
+    <div class="carousel-inner h-full flex transition-transform duration-700 ease-in-out">
+      <div class="carousel-item min-w-full">
+        <app-preventivo></app-preventivo>
+      </div>
+      <div class="carousel-item min-w-full">
+        <app-correctivo></app-correctivo>
+      </div>
+    </div>
+  
+    <!-- Slider controls -->
+    <button (click)="prevSlide()" class="absolute top-1/2 left-0 z-30 flex items-center justify-center h-12 w-12 bg-white/30 dark:bg-gray-800/30 rounded-full -translate-y-1/2 group focus:outline-none">
+      <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+      </svg>
+    </button>
+    <button (click)="nextSlide()" class="absolute top-1/2 right-0 z-30 flex items-center justify-center h-12 w-12 bg-white/30 dark:bg-gray-800/30 rounded-full -translate-y-1/2 group focus:outline-none">
+      <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+      </svg>
+    </button>
+  </div>
+  

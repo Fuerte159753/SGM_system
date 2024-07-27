@@ -10,6 +10,7 @@ Route::get('/admin', function () {
 });
 //Administrador\\\
 Route::post('/admin/login',[AdminController::class, 'login']);
+Route::get('/admin/perfil/{id}', [AdminController::class, 'getAdminById']);
 /* Tecnicos */
 Route::get('/admin/count', [AdminController::class, 'countTecnicos']);
 Route::get('/admin/show', [AdminController::class, 'showTecnicos']);
@@ -29,3 +30,6 @@ Route::get('/admin/listasignacion', [AdminController::class, 'showEquiposAsignad
 
 ///Tecnico\\\\
 Route::post('/Tecnico/obtener', [Tecnicocontroller::class, 'showEquiposAsignados']);
+//Graficas\\
+Route::get('admin/graficaequipo', [AdminController::class, 'graficaequipos']);
+Route::get('admin/graficatecnico', [AdminController::class, 'graficatecnico']);

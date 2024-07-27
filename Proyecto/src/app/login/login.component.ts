@@ -31,48 +31,26 @@ export class LoginComponent implements OnInit {
       const loginData = this.Loginform.value;
       this.service.login(loginData).subscribe(
         (response) => {
-          if(response.status == 'success'){
-            ///verificar la variable sesion en la memoria de el navegador\\\
-            ///implementar la verificacion de cokies en el navegdor para verificar el userKey de los administradores o tecnicos\\\\
-            if(response.user == '1'){
-              ///inicio de el admin\\\
-              Swal.fire({
-                icon: 'success',
-                title: 'Bienvenid@ '+ response.name,
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-              });
-              sessionStorage.setItem('keyTec', response.id);
-              this.roter.navigate(['/WelcomeAdmin']);
-            }else if(response.user == '2'){
-              ///inicio de sesion de el tecnico\\\
-              Swal.fire({
-                icon: 'success',
-                title: 'Bienvenid@ '+ response.name,
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-              });
+          if (response.status === 'success') {
+            Swal.fire({
+              icon: 'success',
+              title: 'Bienvenid@ ' + response.name,
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true
+            });
+            if (response.user === 1) {
+              sessionStorage.clear();
               sessionStorage.setItem('keyAdmin', response.id);
+              this.roter.navigate(['/WelcomeAdmin']);
+            } else if (response.user === 2) {
+              sessionStorage.clear();
+              sessionStorage.setItem('keyTec', response.id);
               this.roter.navigate(['/WelcomeTec']);
-            }else{
-              Swal.fire({
-                icon: 'error',
-                title: 'Verifica tus informacion con un supervisor',
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true
-              });
             }
-            console.log('success');
-          }else{
+          } else {
             Swal.fire({
               icon: 'error',
               title: response.message,
@@ -101,4 +79,5 @@ export class LoginComponent implements OnInit {
       this.Loginform.markAllAsTouched();
     }
   }
+  
 }

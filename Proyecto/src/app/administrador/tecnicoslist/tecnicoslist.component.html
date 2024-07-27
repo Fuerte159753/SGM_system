@@ -30,7 +30,6 @@
                                 @if (tecnico.foto==''||tecnico.foto==0) {
                                     <div class="relative group inline-block">
                                         <img class="object-cover w-full h-full rounded-full hover:cursor-pointer" src="http://127.0.0.1:8000/storage/fotos_tecnicos/random.png" alt="Foto de {{ tecnico.nombre }} {{ tecnico.apellidos }}" loading="lazy">
-                                        
                                         <!-- Tooltip -->
                                         @if (tecnico.estado == 1) {
                                             <div class="tooltip absolute right-0 top-1/2 transform translate-x-full -translate-y-1/2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 z-10 w-24 shadow-lg">
@@ -113,10 +112,7 @@
       <h2 class="text-xl font-bold text-center mb-8 font-sans">Editar Técnico</h2>
       <form [formGroup]="updateTecnico" (ngSubmit)="actualizarTecnico()">
         <div class="w-5/6 mx-auto my-auto font-sans">
-          <!-- Contenedor para los campos del formulario -->
           <div class="mb-10 flex flex-wrap gap-6">
-      
-            <!-- Campo para Nombre -->
             <div class="flex-1">
               <label class="block text-sm font-medium text-gray-700 mb-1" for="nombre">Nombre:</label>
               <input type="text" id="nombre" formControlName="nombre" class="w-full border-b border-gray-400 rounded-r-lg p-2" />

@@ -1,47 +1,22 @@
-import { NgClass, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
+import { NgClass, NgIf } from '@angular/common';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ServiceService } from '../../service/service.service';
+
+interface PieChartData {
+  name: string;
+  value: number;
+}
 
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [NgClass, NgIf],
+  imports: [NgClass, NgIf, NgxChartsModule],
   templateUrl: './inicio.component.html',
-  styleUrl: './inicio.component.css'
+  styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent {
   currentDate: Date = new Date();
-  icons = [
-    { type: 'success', class: 'bi bi-check-circle text-green-400', message: 'la operacion fue exitosa!', noty:'Exito' },
-    { type: 'error', class: 'bi bi-x-circle text-red-600', message: 'Ocurrio un error, pero trabajaremos en ello.', noty:'Error' },
-    { type: 'warning', class: 'bi bi-exclamation-circle text-amber-400', message: 'Seguro que desea realizar esta accion.', noty:'Precaucion' },
-    { type: 'info', class: 'bi bi-question-circle text-cyan-500', message: 'Esta informacion es delicada.', noty:'Seguro?' }
-  ];
-  currentIcon = this.icons[0]; // Por defecto, usa el primer ícono.
-  isVisible = false;
-  animationClass = '';
-
-  constructor() {}
-
-  showNotification(type: string) {
-    this.currentIcon = this.icons.find(icon => icon.type === type) || this.icons[0];
-    this.isVisible = true;
-    this.animationClass = 'animation-slide-in-right'; // Aplica la animación de entrada
-
-    // Configurar un temporizador para ocultar la notificación después de 5 segundos
-    setTimeout(() => {
-      this.animationClass = 'animation-slide-out-right'; // Cambiar a la animación de salida
-      setTimeout(() => {
-        this.isVisible = false; // Ocultar completamente después de la animación
-      }, 500); // Duración de la animación de salida
-    }, 3000);
-  }
-
-  closeNotification() {
-    this.animationClass = 'animation-slide-out-right'; // Cambiar a la animación de salida
-    setTimeout(() => {
-      this.isVisible = false; // Ocultar completamente después de la animación
-    }, 500); // Duración de la animación de salida
-  }
 
   Fecha(): string {
     const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -60,4 +35,76 @@ export class InicioComponent {
     return `${dayOfWeek}, ${day} de ${month} de ${year}, ${formattedTime}`;
   }
 
+  pieChartDataEquipos: PieChartData[] = [];
+  totalEquipos: number = 0;
+  equiposAsignados: number = 0;
+  equiposNoAsignados: number = 0;
+  pieChartDataTecnicos: PieChartData[] = [];
+  habilitados: number = 0;
+  inhabilitados: number = 0;
+
+  view: [number, number] = [500, 300];
+  showLegend = true;
+  showLabels = true;
+  explodeSlices = true;
+  doughnut = true;
+
+  colorSchemeEquipos: any = {
+    domain: ['#10B981', '#EF4444']
+  };
+
+  colorSchemeTecnicos: any = {
+    domain: ['#3B82F6', '#F59E0B']
+  };
+
+  constructor(private service: ServiceService) { }
+
+  ngOnInit(): void {
+    this.graficaequipo();
+    this.graficatecnico();
+  }
+
+  graficaequipo() {
+    this.service.graficaequipo().subscribe(data => {
+      this.totalEquipos = data.totalEquipos;
+      this.equiposAsignados = data.totalEquiposAsignados;
+      this.equiposNoAsignados = this.totalEquipos - this.equiposAsignados;
+
+      this.pieChartDataEquipos = [
+        { name: 'Asignados', value: this.equiposAsignados },
+        { name: 'No Asignados', value: this.equiposNoAsignados }
+      ];
+    });
+  }
+
+  graficatecnico() {
+    this.service.graficatecnico().subscribe(data => {
+      this.habilitados = data.habilitados;
+      this.inhabilitados = data.inhabilitados;
+
+      this.pieChartDataTecnicos = [
+        { name: 'Habilitados', value: this.habilitados },
+        { name: 'Inhabilitados', value: this.inhabilitados }
+      ];
+    });
+  }
+
+
+  numberCardData = [
+    { name: 'Ventas', value: 1024 },
+    { name: 'Clientes', value: 548 },
+    { name: 'Productos', value: 230 },
+    { name: 'Facturación', value: 7890 }
+  ];
+
+  // Opciones del gráfico
+  showXAxis = false; // No mostrar el eje X
+  showYAxis = false; // No mostrar el eje Y
+  showYAxisLabel = false; // No mostrar etiqueta del eje Y
+  showXAxisLabel = false; // No mostrar etiqueta del eje X
+  yAxisLabel = ''; // Etiqueta del eje Y
+  xAxisLabel = ''; // Etiqueta del eje X
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
 }

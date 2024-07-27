@@ -24,7 +24,7 @@ export class IniciousuarioComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    this.id = sessionStorage.getItem('keyAdmin');
+    this.id = sessionStorage.getItem('keyTec');
     this.obtenerEquipos();
   }
   obtenerEquipos(){

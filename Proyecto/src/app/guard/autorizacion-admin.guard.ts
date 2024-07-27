@@ -1,15 +1,17 @@
+// autorizacion.guard.ts
+
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class verifitecni implements CanActivate {
+export class autorizacionAdminGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(): boolean {
     if (typeof window !== 'undefined') {
-      const keytecExists = !!window.sessionStorage.getItem('keyTec');
+      const keytecExists = !!window.sessionStorage.getItem('keyAdmin');
 
       if (!keytecExists) {
 
@@ -18,6 +20,6 @@ export class verifitecni implements CanActivate {
       }
     }
 
-    return true; // Permite la navegación si la variable existe
+    return true;
   }
 }

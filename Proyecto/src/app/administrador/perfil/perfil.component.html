@@ -1,0 +1,89 @@
+<div class="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-200 mt-8">
+    <h2 class="text-2xl font-bold mb-6 text-center">Perfil de Administrador</h2>
+  
+    <form [formGroup]="perfilForm" (ngSubmit)="actualizarPerfil()" class="mb-8">
+      <h3 class="text-xl font-semibold mb-4">Datos Generales</h3>
+      <div class="mb-4">
+        <label class="block text-gray-700">Nombre</label>
+        <input type="text" formControlName="nombre" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+        <div *ngIf="perfilForm.get('nombre')?.invalid && perfilForm.get('nombre')?.touched" class="text-red-500 text-sm">Nombre es requerido</div>
+      </div>
+  
+      <div class="mb-4">
+        <label class="block text-gray-700">Apellidos</label>
+        <input type="text" formControlName="apellidos" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+        <div *ngIf="perfilForm.get('apellidos')?.invalid && perfilForm.get('apellidos')?.touched" class="text-red-500 text-sm">Apellidos son requeridos</div>
+      </div>
+  
+      <div class="mb-4">
+        <label class="block text-gray-700">Teléfono</label>
+        <input type="text" formControlName="telefono" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+        <div *ngIf="perfilForm.get('telefono')?.invalid && perfilForm.get('telefono')?.touched" class="text-red-500 text-sm">Teléfono debe ser un número de 10 dígitos</div>
+      </div>
+  
+      <div class="mb-4">
+        <label class="block text-gray-700">Domicilio</label>
+        <input type="text" formControlName="domicilio" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+        <div *ngIf="perfilForm.get('domicilio')?.invalid && perfilForm.get('domicilio')?.touched" class="text-red-500 text-sm">Domicilio es requerido</div>
+      </div>
+  
+      <div class="mb-4">
+        <label class="block text-gray-700">Correo</label>
+        <input type="email" formControlName="correo" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+        <div *ngIf="perfilForm.get('correo')?.invalid && perfilForm.get('correo')?.touched" class="text-red-500 text-sm">Correo no es válido</div>
+      </div>
+  
+      <div class="flex justify-end">
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700">Actualizar Perfil</button>
+      </div>
+    </form>
+</div>  
+
+<div class="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-200 mt-8">
+    <form  class="mb-8"> <!--[formGroup]="passwordForm" (ngSubmit)="cambiarContrasena()"-->
+      <h3 class="text-xl font-semibold mb-4">Cambiar Contraseña</h3>
+      <div class="mb-4">
+        <label class="block text-gray-700">Contraseña Actual</label>
+        <input type="password" formControlName="currentPassword" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+        <!--<div *ngIf="passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched" class="text-red-500 text-sm">Contraseña actual es requerida</div>-->
+      </div>
+  
+      <div class="mb-4">
+        <label class="block text-gray-700">Nueva Contraseña</label>
+        <input type="password" formControlName="newPassword" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+        <!--<div *ngIf="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched" class="text-red-500 text-sm">Nueva contraseña es requerida y debe tener al menos 8 caracteres</div>-->
+      </div>
+  
+      <div class="mb-4">
+        <label class="block text-gray-700">Confirmar Nueva Contraseña</label>
+        <input type="password" formControlName="confirmPassword" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+        <!--<div *ngIf="passwordForm.get('confirmPassword')?.invalid && passwordForm.get('confirmPassword')?.touched" class="text-red-500 text-sm">Confirmar nueva contraseña es requerido</div>-->
+      </div>
+  
+      <!--<div *ngIf="passwordForm.hasError('passwordMismatch')" class="text-red-500 text-sm mb-4">Las contraseñas no coinciden</div>-->
+  
+      <div class="flex justify-end">
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700">Cambiar Contraseña</button>
+      </div>
+    </form>
+</div>
+
+<div class="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-200 mt-8">
+    <form  class="mb-8"><!--(ngSubmit)="cambiarFoto()"-->
+      <h3 class="text-xl font-semibold mb-4">Cambiar Foto</h3>
+      <div>
+        <label class="block text-sm font-medium leading-6 text-gray-900" for="file_input">Subir Foto</label>
+        <input 
+          type="file" 
+          (change)="onFileSelected($event)" 
+          class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+          id="file_input"
+          aria-describedby="file_input_help"
+        >
+        <p class="mt-1 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG o GIF (MAX. 800x400px).</p>
+      </div>
+      <div class="flex justify-end mt-4">
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700">Cambiar Foto</button>
+      </div>
+    </form>
+</div>

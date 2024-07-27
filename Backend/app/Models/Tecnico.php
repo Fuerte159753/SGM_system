@@ -30,7 +30,6 @@ class Tecnico extends Authenticatable
         'foto',
         'token',
     ];
-
     protected $hidden = [
         'password',
         'remember_token',

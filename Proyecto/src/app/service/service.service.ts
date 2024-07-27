@@ -9,10 +9,18 @@ import { HttpHeaders } from '@angular/common/http';
 export class ServiceService {
   constructor(private http:HttpClient) { }
   urll='http://127.0.0.1:8000/api/admin/'
+  //urll='https://sgmsystem.proyectoinutvm.com/backend/backend/public/api/admin/';
 
   //login
   login(loginData: { email: string; password: string }){
     return this.http.post<any>(this.urll + 'login', loginData);
+  }
+  //Graficas\\
+  graficaequipo():  Observable<any>{
+    return this.http.get<any>(this.urll + 'graficaequipo');
+  }
+  graficatecnico(): Observable<any> {
+    return this.http.get<any>(this.urll + 'graficatecnico');
   }
   //admin
   idtec():Observable<any> {
@@ -52,4 +60,11 @@ export class ServiceService {
     return this.http.delete<any>(`${this.urll + 'inhabilitar/'}${id}`);
   }
   //user
+  //perfil
+  getAdminById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.urll}perfil/${id}`);
+  }
+  updateAdmin(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.urll}/admin/${id}`, data);
+  }
 }

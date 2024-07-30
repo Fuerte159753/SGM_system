@@ -65,6 +65,16 @@ export class ServiceService {
     return this.http.get<any>(`${this.urll}perfil/${id}`);
   }
   updateAdmin(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.urll}/admin/${id}`, data);
+    return this.http.put<any>(`${this.urll+'perfil/'}${id}`, data);
+  }
+  updatepass(id: number, data: any): Observable<any>{
+    return this.http.put<any>(`${this.urll+'perfilpassword/'}${id}`, data)
+  }
+  updateProfilePicture(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.urll+'fotoadmin'}`, formData);
+  }
+  // foto de el admin
+  getphoto(id: any): Observable<any> {
+    return this.http.get<any> (`${this.urll}photo/${id}`);
   }
 }

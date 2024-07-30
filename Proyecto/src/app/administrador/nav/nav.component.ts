@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { HostListener, ElementRef } from '@angular/core';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 import Swal from 'sweetalert2';
+import { ServiceService } from '../../service/service.service';
 
 @Component({
   selector: 'app-nav',
@@ -13,17 +14,22 @@ import Swal from 'sweetalert2';
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.css'
 })
-export class NavComponent {
+export class NavComponent implements OnInit {
+  id: any = '';
+  photo: any = '';
   mostrarMenuTecnicos: boolean = false;
   mostrarMenuEquipos: boolean = false;
   mostrarNavbar: boolean = true;
   mostraropciones: boolean = false;
   private notyf: Notyf;
 
-  constructor(private el: ElementRef, private roter: Router) {
+  constructor(private el: ElementRef, private roter: Router, private service: ServiceService) {
     this.notyf = new Notyf();
   }
-
+  ngOnInit(): void {
+    this.id = sessionStorage.getItem('keyAdmin');
+    this.obtenerphoto();
+  }
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     if (!this.el.nativeElement.contains(event.target)) {
@@ -77,5 +83,12 @@ export class NavComponent {
         this.roter.navigate(['/Login']);
       }
     })
+  }
+  obtenerphoto(){
+    this.service.getphoto(this.id).subscribe(
+      (response)=>{
+        this.photo = response.foto;
+      }
+    )
   }
 }

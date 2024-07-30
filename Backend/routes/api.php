@@ -6,11 +6,15 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Tecnicocontroller;
 
 Route::get('/admin', function () {
-    return 'Hola ya estoy funcional';
+    return json_encode('Hola ya estoy funcional');
 });
 //Administrador\\\
 Route::post('/admin/login',[AdminController::class, 'login']);
 Route::get('/admin/perfil/{id}', [AdminController::class, 'getAdminById']);
+Route::put('/admin/perfil/{id}', [AdminController::class, 'updateAdmin']);
+Route::put('/admin/perfilpassword/{id}', [AdminController::class, 'updatePasswordAdmin']);
+Route::post('/admin/fotoadmin', [AdminController::class, 'updatePhoto']);
+Route::get('/admin/photo/{id}',[AdminController::class, 'getPhoto']);
 /* Tecnicos */
 Route::get('/admin/count', [AdminController::class, 'countTecnicos']);
 Route::get('/admin/show', [AdminController::class, 'showTecnicos']);

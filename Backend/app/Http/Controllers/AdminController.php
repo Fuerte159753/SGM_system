@@ -100,14 +100,14 @@ class AdminController extends Controller
                      return response()->json([
                          'message' => 'Contraseña incorrecta',
                          'status' => 'error',
-                     ],);
+                     ]);
                  }
              }
      
              return response()->json([
                  'message' => 'Correo no encontrado',
                  'status' => 'error',
-             ], 404);
+             ]);
          } catch (\Exception $e) {
              return response()->json([
                  'message' => 'Error al intentar iniciar sesión',
@@ -455,7 +455,7 @@ class AdminController extends Controller
             ], 500);
         }
     }
-    //perfil\\\
+    //perfil administrador\\\
     public function getAdminById($id)
     {
         try {
@@ -471,7 +471,107 @@ class AdminController extends Controller
                         'correo' => $admin->correo,
                         'foto' => $admin->foto,
                     ],
-                ], 200);
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Administrador no encontrado',
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error al obtener los datos del administrador',
+                'details' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function updateAdmin(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'telefono' => 'required|max:10',
+            'domicilio' => 'required|string|max:255',
+            'correo' => 'required|email|ends_with:@gmail.com,@hotmail.com,@outlook.com',
+        ]);
+        $admin = Administrador::find($id);
+        if (!$admin) {
+            return response()->json(['message' => 'Administrador no encontrado.'], 404);
+        }
+
+        $admin->update($validatedData);
+        return response()->json(['message' => 'Perfil actualizado exitosamente']);
+    }
+
+    public function updatePasswordAdmin(Request $request, $id)
+    {
+        // Validar los datos del formulario
+        $validatedData = $request->validate([
+            'password' => 'required',
+            'newPassword' => 'required|min:8',
+            'confirmPassword' => 'required|same:newPassword',
+        ]);
+
+        // Buscar el administrador por su ID
+        $admin = Administrador::find($id);
+
+        if (!$admin) {
+            return response()->json(['status' => 'error', 'message' => 'Administrador no encontrado.']);
+        }
+
+        // Verificar que la contraseña actual coincida
+        if (!Hash::check($request->input('password'), $admin->password)) {
+            return response()->json(['status' => 'error', 'message' => 'Tu Contraseña proporcionada no coincide con la almacenada en el sistema.']);
+        }
+
+        // Actualizar la contraseña con la nueva
+        $admin->password = Hash::make($request->input('newPassword'));
+        $admin->save();
+
+        return response()->json(['status' => 'success', 'message' => 'Contraseña actualizada con éxito.']);
+    }
+    public function updatePhoto(Request $request)
+    {
+        // Validar la solicitud
+        $request->validate([
+            'id' => 'required|exists:administrador,id', // Validar que el ID sea un entero y exista en la tabla
+            'nombreFoto' => 'required|string',
+            'foto' => 'required|file|mimes:svg,png,jpg,gif|max:2048', // Validar el archivo
+        ]);
+        $admin = Administrador::find($request->input('id'));
+
+        if (!$admin) {
+            return response()->json(['status' => 'error', 'message' => 'Administrador no encontrado']);
+        }
+
+        $file = $request->file('foto');
+        $nombreArchivo = 'admin_' . $admin->id . '.' . $file->getClientOriginalExtension();
+        if ($admin->foto) {
+            $oldPhotoBaseName = 'admin_' . $admin->id;
+            $files = Storage::files('public/fotos_administradores');
+
+            foreach ($files as $filePath) {
+                $fileName = basename($filePath);
+                if (strpos($fileName, $oldPhotoBaseName) === 0) {
+                    if (Storage::exists($filePath)) {
+                        Storage::delete($filePath);
+                    }
+                }
+            }
+        }
+
+        $rutaArchivo = $file->storeAs('public/fotos_administradores', $nombreArchivo);
+        $admin->foto = Storage::url($rutaArchivo);
+        $admin->save();
+        return response()->json(['status' => 'success', 'message' => 'Foto actualizada exitosamente']);
+    }
+    public function getPhoto($id)
+    {
+        try {
+            $admin = Administrador::find($id);
+            if ($admin) {
+                return response()->json(['foto' => $admin->foto]);
             } else {
                 return response()->json([
                     'status' => 'error',

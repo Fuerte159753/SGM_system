@@ -35,8 +35,4 @@
   .animation-slide-out-right {
     animation: slide-out-right 0.7s ease-out forwards;
   }
-/*-------------------------------------------*/
-ngx-charts-card {
-  margin: 10px;
-  padding: 10px;
-}
+    

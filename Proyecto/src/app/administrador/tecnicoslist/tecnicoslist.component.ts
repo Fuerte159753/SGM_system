@@ -1,4 +1,3 @@
-import { response } from 'express';
 import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../../service/service.service';
 import { NgFor,NgIf } from '@angular/common';
@@ -6,9 +5,8 @@ import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 import Swal from 'sweetalert2';
 import { HostListener, ElementRef } from '@angular/core';
-import { FormGroup, FormsModule,ReactiveFormsModule, FormBuilder, Validators, MinLengthValidator } from '@angular/forms';
+import { FormGroup, FormsModule,ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { emailDomainValidator } from './custom-validators';
-import { error } from 'console';
 
 @Component({
   selector: 'app-tecnicoslist',

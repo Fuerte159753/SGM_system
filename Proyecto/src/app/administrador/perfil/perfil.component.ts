@@ -3,6 +3,10 @@ import { ServiceService } from '../../service/service.service';
 import Swal from 'sweetalert2';
 import { FormGroup, FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
+import { emailDomainValidator } from '../tecnicoslist/custom-validators';
+import { Router } from '@angular/router';
+import { response } from 'express';
+import { runInThisContext } from 'node:vm';
 
 @Component({
   selector: 'app-perfil',
@@ -13,44 +17,42 @@ import { NgIf } from '@angular/common';
 })
 export class PerfilComponent implements OnInit {
   id: any = '';
-  perfilForm: FormGroup;
+  adminPerfil: any = {};
+  perfilUpdate: FormGroup;
+  originalValues: any = {};
+  updatepassword: FormGroup;
   selectedFile: File | null = null;
+  allowedExtensions = ['image/jpeg', 'image/png', 'image/svg+xml'];
+  errorMessage: string | null = null;
 
-  constructor(private service: ServiceService, private fb: FormBuilder) {
-    this.perfilForm = this.fb.group({
+  constructor(private service: ServiceService, private fb: FormBuilder, private rote: Router) {
+    const allowedDomains = ['gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'example.com']; 
+    this.perfilUpdate = this.fb.group({
       nombre: ['', Validators.required],
       apellidos: ['', Validators.required],
       telefono: ['', [Validators.required]],
       domicilio: ['', Validators.required],
-      correo: ['', [Validators.required, Validators.email]],
-      foto: [''],
-      password: ['', Validators.minLength(6)],
-      confirmPassword: ['']
-    }, { validator: this.passwordMatchValidator });
+      correo: ['', [Validators.required, Validators.email, emailDomainValidator(allowedDomains)]],
+    });
+    this.updatepassword = this.fb.group({
+      password: ['', Validators.required],
+      newPassword: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', Validators.required]
+    }, {validator: this.checkPasswords});
   }
 
   ngOnInit(): void {
     this.id = sessionStorage.getItem('keyAdmin');
-    if (this.id) {
-      this.Obtenerperfil();
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'No se encontró el ID de administrador en la sesión',
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true
-      });
-    }
+    this.Obtenerperfil();
   }
 
   Obtenerperfil() {
     this.service.getAdminById(+this.id).subscribe(
       (response) => {
         if (response.status === 'success') {
-          this.perfilForm.patchValue(response.data);
+          this.adminPerfil = response.data;
+          this.perfilUpdate.patchValue(this.adminPerfil);
+          this.originalValues = { ...this.perfilUpdate.value }; // Guardar los valores originales
         } else {
           Swal.fire({
             icon: 'error',
@@ -78,49 +80,31 @@ export class PerfilComponent implements OnInit {
     );
   }
 
-  passwordMatchValidator(form: FormGroup) {
-    return form.get('password')?.value === form.get('confirmPassword')?.value
-      ? null : { 'mismatch': true };
-  }
-
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-    }
-  }
-
   actualizarPerfil() {
-    if (this.perfilForm.valid) {
-      const formData = new FormData();
-      formData.append('nombre', this.perfilForm.get('nombre')?.value);
-      formData.append('apellidos', this.perfilForm.get('apellidos')?.value);
-      formData.append('telefono', this.perfilForm.get('telefono')?.value);
-      formData.append('domicilio', this.perfilForm.get('domicilio')?.value);
-      formData.append('correo', this.perfilForm.get('correo')?.value);
-      if (this.selectedFile) {
-        formData.append('foto', this.selectedFile, this.selectedFile.name);
-      }
-      if (this.perfilForm.get('password')?.value) {
-        formData.append('password', this.perfilForm.get('password')?.value);
-      }
+    if (this.perfilUpdate.valid) {
+      const formValues = this.perfilUpdate.value;
+      const hasChanges = Object.keys(formValues).some(key => formValues[key] !== this.adminPerfil[key]);
 
-      this.service.updateAdmin(this.id, formData).subscribe(
-        (response) => {
-          if (response.status === 'success') {
-            Swal.fire({
-              icon: 'success',
-              title: 'Perfil actualizado exitosamente',
-              toast: true,
-              position: 'top-end',
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true
-            });
-          } else {
+      if (hasChanges) {
+        this.service.updateAdmin(this.id, formValues).subscribe(
+          (response) => {
+            if (response) {
+              Swal.fire({
+                icon: 'success',
+                title: response.message,
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+              }); // Actualizar los valores originales
+              this.rote.navigate(['/WelcomeAdmin']);
+            }
+          },(error) => {
             Swal.fire({
               icon: 'error',
-              title: response.message,
+              title: 'Error de conexión',
+              text: 'No se pudo conectar con el servidor',
               toast: true,
               position: 'top-end',
               showConfirmButton: false,
@@ -128,22 +112,88 @@ export class PerfilComponent implements OnInit {
               timerProgressBar: true
             });
           }
-        },
-        (error) => {
+        );
+      } else {
+        Swal.fire({
+          icon: 'info',
+          title: 'No se han realizado cambios',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true
+        });
+      }
+    } else {
+      this.perfilUpdate.markAllAsTouched();
+    }
+  }
+  actualizarPasword(){
+    if(this.updatepassword.valid){
+      const formValues = this.updatepassword.value;
+      this.service.updatepass(this.id, formValues).subscribe(
+        (response) =>{
           Swal.fire({
-            icon: 'error',
-            title: 'Error de conexión',
-            text: 'No se pudo conectar con el servidor',
+            icon: response.status,
+            title: response.message,
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true
           });
+          this.updatepassword.reset();
         }
       );
-    } else {
-      this.perfilForm.markAllAsTouched();
+    }else{
+      this.updatepassword.markAllAsTouched();
     }
+  }
+  checkPasswords(group: FormGroup) {
+    const pass = group.get('newPassword')?.value;
+    const confirmPass = group.get('confirmPassword')?.value;
+    return pass === confirmPass ? null : { notSame: true };
+  }
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    this.errorMessage = null;
+
+    if (file && this.allowedExtensions.includes(file.type)) {
+      this.selectedFile = file;
+    } else {
+      this.selectedFile = null;
+      this.errorMessage = 'Solo se permiten archivos SVG, PNG O JPG.';
+    }
+  }
+  cambiarFoto() {
+    if (this.selectedFile) {
+      const adminId = this.id;
+      const fileName = `administrador_${adminId}${this.getFileExtension(this.selectedFile.name)}`;
+      const formData = new FormData();
+      formData.append('id', adminId);
+      formData.append('nombreFoto', fileName);
+      formData.append('foto', this.selectedFile, fileName);
+      this.service.updateProfilePicture(formData).subscribe(
+        (response) => {
+        Swal.fire({
+          icon: response.status,
+          title: response.message,
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true
+        }).then(() => {
+          window.location.reload();
+        });
+        
+      });
+    } else {
+      this.errorMessage = 'Por favor, selecciona una imagen válida antes de enviar.';
+    }
+  }
+  private getFileExtension(fileName: string): string {
+    const parts = fileName.split('.');
+    return parts.length > 1 ? `.${parts.pop()}` : '';
   }
 }

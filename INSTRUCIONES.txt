@@ -1,0 +1,4 @@
+1.- EN LA CARPETA BACKEND ABRIR UN CMD O EN LA CONSOLA DE VISUAL STUDIO CODE EJECUTAR EL COMANDO composer install --force
+2.- EN LA CARPETA DE PROYECTO DE IGUAL MANERA EN UN CMD O EN VSC EJECUTAR EL COMANDO npm install
+3.- revisar el archivo .evn de laravel o en su caso .env example que la base de datos este nombrada
+

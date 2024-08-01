@@ -180,8 +180,8 @@ class AdminController extends Controller
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
             $nombreArchivo = 'foto_' . $tecnico->nombre . '_' . $tecnico->apellidos . '.' . $file->getClientOriginalExtension();
-            $rutaArchivo = $file->storeAs('public/fotos_tecnicos', $nombreArchivo); // Guardar en storage/app/public/fotos_tecnicos
-            $tecnico->foto = Storage::url($rutaArchivo); // Guardar la URL pública en la base de datos
+            $rutaArchivo = $file->storeAs('public/fotos_tecnicos', $nombreArchivo);
+            $tecnico->foto = Storage::url($rutaArchivo);
         }
 
         if ($tecnico->save()) {

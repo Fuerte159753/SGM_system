@@ -1,34 +1,37 @@
-<div class="flex min-h-full flex-col justify-center px-6 py-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Registro de Técnicos</h2>
+<div class="flex w-3/4 flex-col justify-center px-6 lg:px-8 mx-auto">
+    <div class="text-right">
+      <h2 class="mt-10 text-2xl font-bold leading-9 tracking-tight text-sky-900">Registro de Técnicos</h2>
     </div>
   
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <div class="mt-10 sm:mx-auto sm:w-full">
       <form [formGroup]="Regtec" class="space-y-6" (ngSubmit)="registro()">
-        <div>
-          <label for="numempleado" class="block text-sm font-medium leading-6 text-gray-900">N.º de Empleado</label>
-          <div class="mt-2">
-            <input formControlName="numempleado" type="text" id="numempleado" placeholder="Id empleado" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+        <div class="flex items-center text-lg  text-sky-800">
+          <label for="numempleado" class=" font-medium leading-6 mr-2">N.º de Tecnico:</label>
+          <input formControlName="numempleado" type="text" id="numempleado" placeholder="Id empleado" class=" font-medium leading-6 bg-white border-none focus:outline-none p-0" />
+        </div>  
+
+        <div class="flex space-x-4">
+          <div class="w-1/2">
+            <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Nombre(s)</label>
+            <div class="mt-2">
+              <input formControlName="name" type="text" id="name" placeholder="Nombre(s)" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5" />
+              <div *ngIf="Regtec.controls['name'].invalid && Regtec.controls['name'].touched" class="text-red-500 text-sm mt-1">
+                {{ Regtec.controls['name'].hasError('required') ? 'El nombre es requerido.' : 'Solo se permiten letras y espacios.' }}
+              </div>
+            </div>
           </div>
-        </div>
-        <div>
-          <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Nombre(s)</label>
-          <div class="mt-2">
-            <input formControlName="name" type="text" id="name" placeholder="Nombre(s)" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            <div *ngIf="Regtec.controls['name'].invalid && Regtec.controls['name'].touched" class="text-red-500 text-sm mt-1">
-              {{ Regtec.controls['name'].hasError('required') ? 'El nombre es requerido.' : 'Solo se permiten letras y espacios.' }}
+          <div class="w-1/2">
+            <label for="apellido" class="block text-sm font-medium leading-6 text-gray-900">Apellidos</label>
+            <div class="mt-2">
+              <input formControlName="apellido" type="text" id="apellido" placeholder="Apellidos" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5" />
+              <div *ngIf="Regtec.controls['apellido'].invalid && Regtec.controls['apellido'].touched" class="text-red-500 text-sm mt-1">
+                {{ Regtec.controls['apellido'].hasError('required') ? 'El apellido es requerido.' : 'Solo se permiten letras y espacios.' }}
+              </div>
             </div>
           </div>
         </div>
-        <div>
-          <label for="apellido" class="block text-sm font-medium leading-6 text-gray-900">Apellidos</label>
-          <div class="mt-2">
-            <input formControlName="apellido" type="text" id="apellido" placeholder="Apellidos" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            <div *ngIf="Regtec.controls['apellido'].invalid && Regtec.controls['apellido'].touched" class="text-red-500 text-sm mt-1">
-              {{ Regtec.controls['apellido'].hasError('required') ? 'El apellido es requerido.' : 'Solo se permiten letras y espacios.' }}
-            </div>
-          </div>
-        </div>
+
+           
         <div>
           <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Correo electrónico</label>
           <div class="mt-2">

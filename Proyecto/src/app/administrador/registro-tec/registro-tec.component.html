@@ -1,96 +1,100 @@
-<div class="flex w-3/4 flex-col justify-center px-6 lg:px-8 mx-auto">
-    <div class="text-right">
-      <h2 class="mt-10 text-2xl font-bold leading-9 tracking-tight text-sky-900">Registro de Técnicos</h2>
+<div class="flex w-3/4 flex-col justify-center px-6 lg:px-8 mx-auto border border-gray-300 shadow-xl rounded-2xl">
+    <div class="text-center pt-4">
+      <h2 class="pb-4 text-2xl font-bold leading-9 tracking-tight text-gray-900">Registro de Técnicos</h2>
     </div>
-  
-    <div class="mt-10 sm:mx-auto sm:w-full">
-      <form [formGroup]="Regtec" class="space-y-6" (ngSubmit)="registro()">
-        <div class="flex items-center text-lg  text-sky-800">
-          <label for="numempleado" class=" font-medium leading-6 mr-2">N.º de Tecnico:</label>
-          <input formControlName="numempleado" type="text" id="numempleado" placeholder="Id empleado" class=" font-medium leading-6 bg-white border-none focus:outline-none p-0" />
+    <div class="mt-2 sm:mx-auto sm:w-full">
+      <form [formGroup]="Regtec" class="space-y-3" (ngSubmit)="registro()">
+        <div class="pb-6 flex items-center text-lg  text-purple-800">
+          <label for="numempleado" class="font-medium leading-6 mr-2">N.º de Técnico:</label>
+          <input formControlName="numempleado" type="text" id="numempleado" placeholder="Id empleado" class="font-medium leading-6 bg-white border-none focus:outline-none p-0" />
         </div>  
-
+    
         <div class="flex space-x-4">
           <div class="w-1/2">
-            <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Nombre(s)</label>
+            <label for="name" class="block text-sm font-medium leading-6 text-purple-800 ml-2">Nombre(s)</label>
             <div class="mt-2">
-              <input formControlName="name" type="text" id="name" placeholder="Nombre(s)" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5" />
+              <input formControlName="name" type="text" id="name" placeholder="Nombre(s)" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
               <div *ngIf="Regtec.controls['name'].invalid && Regtec.controls['name'].touched" class="text-red-500 text-sm mt-1">
                 {{ Regtec.controls['name'].hasError('required') ? 'El nombre es requerido.' : 'Solo se permiten letras y espacios.' }}
               </div>
             </div>
           </div>
           <div class="w-1/2">
-            <label for="apellido" class="block text-sm font-medium leading-6 text-gray-900">Apellidos</label>
+            <label for="apellido" class="block text-sm font-medium leading-6 text-purple-800 ml-2">Apellidos</label>
             <div class="mt-2">
-              <input formControlName="apellido" type="text" id="apellido" placeholder="Apellidos" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full p-2.5" />
+              <input formControlName="apellido" type="text" id="apellido" placeholder="Apellidos" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
               <div *ngIf="Regtec.controls['apellido'].invalid && Regtec.controls['apellido'].touched" class="text-red-500 text-sm mt-1">
                 {{ Regtec.controls['apellido'].hasError('required') ? 'El apellido es requerido.' : 'Solo se permiten letras y espacios.' }}
               </div>
             </div>
           </div>
         </div>
-
-           
-        <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Correo electrónico</label>
-          <div class="mt-2">
-            <input formControlName="email" type="email" id="email" placeholder="alguien@example.com" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            <div *ngIf="Regtec.controls['email'].invalid && Regtec.controls['email'].touched" class="text-red-500 text-sm mt-1">
-              {{ Regtec.controls['email'].hasError('required') ? 'El correo electrónico es requerido.' : 'El correo electrónico no es válido.' }}
+        
+        <div class="flex space-x-4">
+          <div class="w-1/2">
+            <label for="email" class="block text-sm font-medium leading-6 text-purple-800 ml-2">Correo electrónico</label>
+            <div class="mt-2">
+              <input formControlName="email" type="email" id="email" placeholder="alguien@example.com" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
+              <div *ngIf="Regtec.controls['email'].invalid && Regtec.controls['email'].touched" class="text-red-500 text-sm mt-1">
+                {{ Regtec.controls['email'].hasError('required') ? 'El correo electrónico es requerido.' : 'El correo electrónico no es válido.' }}
+              </div>
+            </div>
+          </div>
+          <div class="w-1/2">
+            <label for="direccion" class="block text-sm font-medium leading-6 text-purple-800 ml-2">Dirección</label>
+            <div class="mt-2">
+              <input formControlName="direccion" type="text" id="direccion" placeholder="Dirección" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
+              <div *ngIf="Regtec.controls['direccion'].invalid && Regtec.controls['direccion'].touched" class="text-red-500 text-sm mt-1">
+                La dirección es requerida.
+              </div>
             </div>
           </div>
         </div>
-        <div>
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Contraseña</label>
-          <div class="mt-2">
-            <input formControlName="password" type="password" id="password" placeholder="Contraseña" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            <div *ngIf="Regtec.controls['password'].invalid && Regtec.controls['password'].touched" class="text-red-500 text-sm mt-1">
-              {{ Regtec.controls['password'].hasError('required') ? 'La contraseña es requerida.' : 'La contraseña debe tener un minimo de 8 caracteres.' }}
+        
+        <div class="flex space-x-4">
+          <div class="w-1/3">
+            <label for="password" class="block text-sm font-medium leading-6 text-purple-800 ml-2">Contraseña</label>
+            <div class="mt-2">
+              <input formControlName="password" type="password" id="password" placeholder="Contraseña" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
+              <div *ngIf="Regtec.controls['password'].invalid && Regtec.controls['password'].touched" class="text-red-500 text-sm mt-1">
+                {{ Regtec.controls['password'].hasError('required') ? 'La contraseña es requerida.' : 'La contraseña debe tener un mínimo de 8 caracteres.' }}
+              </div>
             </div>
           </div>
-        </div>
-        <div>
-          <label for="confipassword" class="block text-sm font-medium leading-6 text-gray-900">Confirmar Contraseña</label>
-          <div class="mt-2">
-            <input formControlName="confipassword" type="password" id="confipassword" placeholder="Confirmar Contraseña" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            <div *ngIf="Regtec.hasError('notSame') && Regtec.controls['confipassword'].touched" class="text-red-500 text-sm mt-1">
-              Las contraseñas no coinciden.
+          <div class="w-1/3">
+            <label for="confipassword" class="block text-sm font-medium leading-6 text-purple-800 ml-2">Confirmar Contraseña</label>
+            <div class="mt-2">
+              <input formControlName="confipassword" type="password" id="confipassword" placeholder="Confirmar Contraseña" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
+              <div *ngIf="Regtec.hasError('notSame') && Regtec.controls['confipassword'].touched" class="text-red-500 text-sm mt-1">
+                Las contraseñas no coinciden.
+              </div>
             </div>
           </div>
-        </div>
-        <div>
-          <label for="telefono" class="block text-sm font-medium leading-6 text-gray-900">Teléfono</label>
-          <div class="mt-2">
-            <input formControlName="telefono" type="tel" id="telefono" placeholder="Número de Teléfono" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            <div *ngIf="Regtec.controls['telefono'].invalid && Regtec.controls['telefono'].touched" class="text-red-500 text-sm mt-1">
-              {{ Regtec.controls['telefono'].hasError('required') ? 'El número de teléfono es requerido.' : 'Debe ser un número de 10 dígitos.' }}
+          <div class="w-1/3">
+            <label for="telefono" class="block text-sm font-medium leading-6 text-purple-800 ml-2">Teléfono</label>
+            <div class="mt-2">
+              <input formControlName="telefono" type="tel" id="telefono" placeholder="Número de Teléfono" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
+              <div *ngIf="Regtec.controls['telefono'].invalid && Regtec.controls['telefono'].touched" class="text-red-500 text-sm mt-1">
+                {{ Regtec.controls['telefono'].hasError('required') ? 'El número de teléfono es requerido.' : 'Debe ser un número de 10 dígitos.' }}
+              </div>
             </div>
           </div>
-        </div>
-        <div>
-          <label for="direccion" class="block text-sm font-medium leading-6 text-gray-900">Dirección</label>
-          <div class="mt-2">
-            <input formControlName="direccion" type="text" id="direccion" placeholder="Dirección" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-            <div *ngIf="Regtec.controls['direccion'].invalid && Regtec.controls['direccion'].touched" class="text-red-500 text-sm mt-1">
-              La dirección es requerida.
-            </div>
+        </div>        
+        
+        <div class="w-3/6">
+          <label class="block text-sm font-medium leading-6 text-purple-800" for="file_input">Subir Foto</label>
+          <div class="mt-2 hover:cursor-pointer">
+            <input type="file" (change)="onFileSelected($event)" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3 hover:cursor-pointer" id="file_input" aria-describedby="file_input_help">
+            <p class="mt-1 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+            <p class="mt-1 text-sm text-gray-500" id="file_input_help">La Fotografía es Opcional.</p>
           </div>
         </div>
-        <div>
-          <label class="block text-sm font-medium leading-6 text-gray-900" for="file_input">Subir Foto</label>
-          <input 
-            type="file" 
-            (change)="onFileSelected($event)" 
-            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
-            id="file_input"
-            aria-describedby="file_input_help"
-          >
-          <p class="mt-1 text-sm text-gray-500" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
-        </div>
-        <div>
-          <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" >Registrar Nuevo Técnico</button>
-        </div>
+        
+        <div class="flex justify-end w-full mt-14 pb-12">
+          <button type="submit" class="px-4 py-2 bg-gradient-to-r from-purple-900 to-purple-800 text-white rounded-md hover:from-sky-700 hover:to-sky-500">
+            Registrar Nuevo Técnico
+          </button>
+        </div>                       
       </form>
     </div>
-  </div>  
+</div>  

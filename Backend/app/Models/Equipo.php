@@ -40,4 +40,8 @@ class Equipo extends Model
     {
         return $this->hasMany(EquipoAsignado::class, 'id_tecnico', 'id');
     }
+    public function fotos()
+    {
+        return $this->hasMany(FotoEquipo::class, 'equipo_id');
+    }
 }

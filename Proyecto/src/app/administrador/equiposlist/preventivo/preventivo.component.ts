@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../../../service/service.service';
-import { NgFor,NgIf } from '@angular/common';
+import { NgClass, NgFor,NgIf } from '@angular/common';
 import Swal from 'sweetalert2';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
@@ -11,7 +11,7 @@ import { FormGroup, FormsModule,ReactiveFormsModule, FormBuilder, Validators } f
 @Component({
   selector: 'app-preventivo',
   standalone: true,
-  imports: [NgFor, ReactiveFormsModule, FormsModule, NgIf],
+  imports: [NgFor, ReactiveFormsModule, FormsModule, NgIf, NgClass],
   templateUrl: './preventivo.component.html',
   styleUrl: './preventivo.component.css'
 })
@@ -125,5 +125,8 @@ export class PreventivoComponent implements OnInit {
       this.asignarquipo2.markAllAsTouched();
       this.Notyf2.error('Rellena todos los campos');
     }
+  }
+  trackById(index: number, equipo: any): number {
+    return equipo.id;
   }
 }

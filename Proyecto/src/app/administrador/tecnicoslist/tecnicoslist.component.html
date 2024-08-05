@@ -1,174 +1,161 @@
 <div class="max-w-screen-lg mx-auto p-6">
-    <h1 class="text-2xl font-bold text-center mb-4">Lista de Técnicos</h1>
-    <div class="flex justify-end mb-8">
-        <!---->
-        <div class="flex items-center bg-white border border-gray-300 rounded-lg">
-            <i class="bi bi-search text-gray-600 text-lg pl-3"></i>
-            <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Buscar" class="flex-1 outline-none text-sm font-medium text-gray-900 px-3 py-2">
-            <select class="bg-white text-gray-900 py-2 px-4 rounded-r-lg outline-none text-sm font-medium" [(ngModel)]="searchField" (change)="onSearch()">
-              <option value="nombre">Buscar por Nombre</option>
-              <option value="correo">Buscar por Correo</option>
-            </select>
-        </div>         
+  <h1 class="text-2xl font-bold text-center mb-1">Lista de Técnicos</h1>
+  <div class="flex">    
+    <div class="flex justify-start mb-8 w-1/2">
+      <div class="flex items-center bg-white border border-gray-300 rounded-lg">
+        <i class="bi bi-search text-gray-600 text-lg pl-3"></i>
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()" placeholder="Buscar" class="flex-1 outline-none text-sm font-medium text-gray-900 px-3 py-2">
+        <select class="bg-white text-gray-900 py-2 px-4 rounded-r-lg outline-none text-sm font-medium" [(ngModel)]="searchField" (change)="onSearch()">
+          <option value="nombre">Buscar por Nombre</option>
+          <option value="correo">Buscar por Correo</option>
+        </select>
+      </div>
     </div>
-        <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md w-11/12 pr-16">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Domicilio</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correo</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (tecnico of tecnicos; track 'is') {
-                    <tr>
-                        <td class="px-6 py-4 whitespace-normal break-words">
-                            <div class="flex items-center text-sm">
-                              <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
-                                @if (tecnico.foto==''||tecnico.foto==0) {
-                                    <div class="relative group inline-block">
-                                        <img class="object-cover w-full h-full rounded-full hover:cursor-pointer" src="http://127.0.0.1:8000/storage/fotos_tecnicos/random.png" alt="Foto de {{ tecnico.nombre }} {{ tecnico.apellidos }}" loading="lazy">
-                                        <!-- Tooltip -->
-                                        @if (tecnico.estado == 1) {
-                                            <div class="tooltip absolute right-0 top-1/2 transform translate-x-full -translate-y-1/2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 z-10 w-24 shadow-lg">
-                                            ID: {{ tecnico.id }}<br>
-                                            Estado: Activo
-                                            <span class="inline-block w-2 h-2 rounded-full bg-green-500 ml-1"></span>
-                                            </div>
-                                        }@else if (tecnico.estado == 0) {
-                                            <div class="tooltip absolute right-0 top-1/2 transform translate-x-full -translate-y-1/2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 z-10 w-24 shadow-lg">
-                                            ID: {{ tecnico.id }}<br>
-                                            Estado: Inactivo
-                                            <span class="inline-block w-2 h-2 rounded-full bg-red-500 ml-1"></span>
-                                            </div>
-                                        }
-                                    </div>
-                                }@else {
-                                    <div class="relative group inline-block"><!--https://sgmsystem.proyectoinutvm.com/backend/backend/public-->
-                                        <img class="object-cover w-full h-full rounded-full hover:cursor-pointer" src="http://127.0.0.1:8000{{tecnico.foto}}" alt="Foto de {{ tecnico.nombre }} {{ tecnico.apellidos }}" loading="lazy">
-                                        
-                                        <!-- Tooltip -->
-                                         @if (tecnico.estado == 1) {
-                                            <div class="tooltip absolute right-0 top-1/2 transform translate-x-full -translate-y-1/2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 z-10 w-24 shadow-lg">
-                                            ID: {{ tecnico.id }}<br>
-                                            Estado: Activo
-                                            <span class="inline-block w-2 h-2 rounded-full bg-green-500 ml-1"></span>
-                                            </div>
-                                        }@else if (tecnico.estado == 0) {
-                                            <div class="tooltip absolute right-0 top-1/2 transform translate-x-full -translate-y-1/2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 z-10 w-24 shadow-lg">
-                                                ID: {{ tecnico.id }}<br>
-                                                Estado: Inactivo
-                                                <span class="inline-block w-2 h-2 rounded-full bg-red-500 ml-1"></span>
-                                                </div>
-                                        }
-                                    </div>
-                                }
-                              </div>
-                              <div>
-                                <p class="font-semibold text-xs">{{ tecnico.nombre }} {{ tecnico.apellidos }}</p>
-                              </div>
-                            </div>
-                          </td>
-                    <td class="px-6 py-4 whitespace-normal break-words text-xs">{{ tecnico.telefono }}</td>
-                    <td class="px-6 py-4 whitespace-normal break-words text-xs">{{ tecnico.domicilio }}</td>
-                    <td class="px-6 py-4 whitespace-normal break-words text-xs">{{ tecnico.correo }}</td>
-                    <td class="px-6 py-4 whitespace-normal break-words flex space-x-2">
-                        <a (click)="showModal(tecnico, tecnico.id)" class="text-blue-600 hover:text-blue-800 flex items-center text-xs hover:cursor-pointer">
-                            <i class="bi bi-pencil mr-1"></i> Editar
-                        </a>
-                        @if (tecnico.estado == 1) {
-                            <a (click)="inabilitar(tecnico.id, tecnico.estado)" class="text-red-600 hover:text-red-800 flex items-center text-xs hover:cursor-pointer">
-                                <i class="bi bi-x-circle mr-1"></i> Inhabilitar
-                            </a>
-                        } @else if (tecnico.estado == 0) {
-                            <a (click)="inabilitar(tecnico.id, tecnico.estado)" class="text-emerald-600 hover:text-emerald-800 flex items-center text-xs hover:cursor-pointer"> 
-                                <i class="bi bi-arrow-clockwise"></i>Habilitar
-                            </a>
-                        } 
-                    </td>
-                    </tr>
-                }@empty {
-                    <tr>
-                    <td colspan="8" class="w-full text-center">
-                        <!-- Contenido de la celda -->
-                        No hay Tecnicos Registrados.
-                      </td>
-                    </tr>
-                }
-            
-            </tbody>
-        </table>
+    <div class="flex justify-end w-1/2">
+      <span routerLink="/WelcomeAdmin/tecRegistro" class="text-orange-500 text-4xl font-semibold hover:text-sky-600 hover:cursor-pointer">
+        <i class="bi bi-plus-circle"></i>
+      </span>
+    </div> 
+  </div>
+  <table class="min-w-full bg-white rounded-lg">
+    <thead class="bg-gradient-to-t from-purple-950 to-gray-800 rounded-t-lg">
+      <tr>
+        <th class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider rounded-tl-lg">Nombre</th>
+        <th class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Teléfono</th>
+        <th class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Domicilio</th>
+        <th class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Correo</th>
+        <th class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider rounded-tr-lg">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tecnico of paginatedTecnicos" class="relative">
+        <td class="px-6 py-4 whitespace-normal break-words">
+          <div class="flex items-center text-sm">
+            <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
+              <div class="relative group inline-block">
+                <img class="object-cover w-full h-full rounded-full hover:cursor-pointer" 
+                     [src]="(tecnico.foto && tecnico.foto !== '0') ? 'http://127.0.0.1:8000' + tecnico.foto : 'http://127.0.0.1:8000/storage/fotos_tecnicos/random.png'" 
+                     alt="Foto de {{ tecnico.nombre }} {{ tecnico.apellidos }}" 
+                     loading="lazy">
+                <div *ngIf="tecnico.estado == 1" class="tooltip absolute right-0 top-1/2 transform translate-x-full -translate-y-1/2 hidden group-hover:block bg-gray-200 text-black text-xs rounded py-1 px-2 z-10 w-28 shadow-lg">
+                  ID: {{ tecnico.id }}<br>
+                  Estado: Activo
+                  <span class="inline-block w-2 h-2 rounded-full bg-green-500 ml-1"></span>
+                </div>
+                <div *ngIf="tecnico.estado == 0" class="tooltip absolute right-0 top-1/2 transform translate-x-full -translate-y-1/2 hidden group-hover:block bg-gray-200 text-black text-xs rounded py-1 px-2 z-10 w-32 shadow-lg">
+                  ID: {{ tecnico.id }}<br>
+                  Estado: Inactivo
+                  <span class="inline-block w-2 h-2 rounded-full bg-red-500 ml-1"></span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="break-words text-xs">{{ tecnico.nombre }} {{ tecnico.apellidos }}</p>
+            </div>
+          </div>
+        </td>
+        <td class="px-6 py-4 whitespace-normal break-words text-xs">{{ tecnico.telefono }}</td>
+        <td class="px-6 py-4 whitespace-normal break-words text-xs">{{ tecnico.domicilio }}</td>
+        <td class="px-6 py-4 whitespace-normal break-words text-xs">{{ tecnico.correo }}</td>
+        <td class="px-6 py-4 whitespace-normal break-words flex space-x-2">
+          <a (click)="showModal(tecnico, tecnico.id)" class="text-blue-600 hover:text-blue-800 flex items-center text-xs hover:cursor-pointer">
+            <i class="bi bi-pencil mr-1"></i> Editar
+          </a>
+          <a *ngIf="tecnico.estado == 1" (click)="inabilitar(tecnico.id, tecnico.estado)" class="text-red-600 hover:text-red-800 flex items-center text-xs hover:cursor-pointer">
+            <i class="bi bi-x-circle mr-1"></i> Inhabilitar
+          </a>
+          <a *ngIf="tecnico.estado == 0" (click)="inabilitar(tecnico.id, tecnico.estado)" class="text-emerald-600 hover:text-emerald-800 flex items-center text-xs hover:cursor-pointer">
+            <i class="bi bi-arrow-clockwise"></i> Habilitar
+          </a>
+        </td>
+        <td class="absolute bottom-0 left-0 right-0 alto bg-gradient-to-r from-gray-700 to-purple-700"></td>
+      </tr>
+      <tr *ngIf="filteredTecnicos.length === 0">
+        <td colspan="5" class="w-full text-center">
+          No hay Técnicos Registrados.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="[5]" [length]="length" (page)="handlePageEvent($event)" *ngIf="filteredTecnicos.length > 5">
+  </mat-paginator>
 </div>
 
 <!-- Modal -->
 <div *ngIf="isModalVisible" class="fixed inset-0 flex items-center justify-center z-50 text-xs">
-    <!-- Background overlay -->
-    <div class="fixed inset-0 bg-gray-800 opacity-50" (click)="hideModal()"></div>
-    
-    <!-- Modal content -->
-    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl z-10">
-      <h2 class="text-xl font-bold text-center mb-8 font-sans">Editar Técnico</h2>
-      <form [formGroup]="updateTecnico" (ngSubmit)="actualizarTecnico()">
-        <div class="w-5/6 mx-auto my-auto font-sans">
-          <div class="mb-10 flex flex-wrap gap-6">
-            <div class="flex-1">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="nombre">Nombre:</label>
-              <input type="text" id="nombre" formControlName="nombre" class="w-full border-b border-gray-400 rounded-r-lg p-2" />
+  <!-- Background overlay -->
+  <div class="fixed inset-0 bg-gray-800 opacity-50" (click)="hideModal()"></div>
+  
+  <!-- Modal content -->
+  <div class="bg-gray-50 rounded-2xl shadow-lg p-6 w-full max-w-3xl z-10">
+    <h2 class="text-xl font-bold text-center mb-8 font-sans">Editar Técnico</h2>
+    <form [formGroup]="updateTecnico" (ngSubmit)="actualizarTecnico()">
+      <div class="w-5/6 mx-auto my-auto font-sans">
+        <div class="mb-10 flex flex-wrap gap-6">
+          <div class="flex-1">
+            <label class="block text-sm font-medium leading-6 text-purple-700 ml-2" for="nombre">Nombre:</label>
+            <div class="mt-2">
+              <input type="text" id="nombre" formControlName="nombre" placeholder="Nombre" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
               <div *ngIf="updateTecnico.get('nombre')?.invalid && updateTecnico.get('nombre')?.touched" class="text-red-500 text-sm mt-1">
                 <span *ngIf="updateTecnico.get('nombre')?.hasError('required')">El nombre es obligatorio.</span>
               </div>
             </div>
-      
-            <!-- Campo para Apellidos -->
-            <div class="flex-1">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="apellido">Apellidos:</label>
-              <input type="text" id="apellido" formControlName="apellidos" class="w-full border-b border-gray-400 rounded-r-lg p-2" />
+          </div>
+    
+          <!-- Campo para Apellidos -->
+          <div class="flex-1">
+            <label class="block text-sm font-medium leading-6 text-purple-700 ml-2" for="apellidos">Apellidos:</label>
+            <div class="mt-2">
+              <input type="text" id="apellidos" formControlName="apellidos" placeholder="Apellidos" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
               <div *ngIf="updateTecnico.get('apellidos')?.invalid && updateTecnico.get('apellidos')?.touched" class="text-red-500 text-sm mt-1">
                 <span *ngIf="updateTecnico.get('apellidos')?.hasError('required')">Los apellidos son obligatorios.</span>
               </div>
             </div>
-      
           </div>
-      
-          <div class="mb-10 flex flex-wrap gap-6">
-      
-            <!-- Campo para Teléfono -->
-            <div class="flex-1">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="telefono">Teléfono:</label>
-              <input type="text" id="telefono" formControlName="telefono" class="w-full border-b border-gray-400 rounded-r-lg p-2" />
+    
+        </div>
+        <div class="mb-10 flex flex-wrap gap-6">
+          <div class="flex-1">
+            <label class="block text-sm font-medium leading-6 text-purple-700 ml-2" for="telefono">Teléfono:</label>
+            <div class="mt-2">
+              <input type="text" id="telefono" formControlName="telefono" placeholder="Teléfono" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
               <div *ngIf="updateTecnico.get('telefono')?.invalid && updateTecnico.get('telefono')?.touched" class="text-red-500 text-sm mt-1">
                 <span *ngIf="updateTecnico.get('telefono')?.hasError('required')">El teléfono es obligatorio.</span>
-                <span *ngIf="updateTecnico.get('telefono')?.hasError('minlength')">El teléfono debe ser de un minimo de 10 digitos.</span>
+                <span *ngIf="updateTecnico.get('telefono')?.hasError('minlength')">El teléfono debe ser de un mínimo de 10 dígitos.</span>
               </div>
             </div>
-      
-            <!-- Campo para Correo -->
-            <div class="flex-1">
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="correo">Correo:</label>
-              <input type="text" id="correo" formControlName="correo" class="w-full border-b border-gray-400 rounded-r-lg p-2" />
+          </div>
+          <div class="flex-1">
+            <label class="block text-sm font-medium leading-6 text-purple-700 ml-2" for="correo">Correo:</label>
+            <div class="mt-2">
+              <input type="text" id="correo" formControlName="correo" placeholder="Correo" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
               <div *ngIf="updateTecnico.get('correo')?.invalid && updateTecnico.get('correo')?.touched" class="text-red-500 text-sm mt-1">
                 <span *ngIf="updateTecnico.get('correo')?.hasError('required')">El correo es obligatorio.</span>
                 <span *ngIf="updateTecnico.get('correo')?.hasError('email')">El formato del correo no es válido.</span>
                 <span *ngIf="updateTecnico.get('correo')?.hasError('invalidEmailDomain')">El dominio del correo no es válido.</span>
               </div>
             </div>
-      
           </div>
-          <div class="mb-12">
-            <label class="block text-sm font-medium text-gray-700 mb-1" for="domicilio">Domicilio:</label>
-            <input type="text" id="domicilio" formControlName="domicilio" class="w-full border-b border-gray-400 rounded-r-lg p-2" />
+    
+        </div>
+        <div class="mb-12">
+          <label class="block text-sm font-medium leading-6 text-purple-700 ml-2" for="domicilio">Domicilio:</label>
+          <div class="mt-2">
+            <input type="text" id="domicilio" formControlName="domicilio" placeholder="Domicilio" class="shadow-sm bg-white border border-gray-300 text-gray-900 text-sm rounded-full focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 block w-full px-4 py-3" />
             <div *ngIf="updateTecnico.get('domicilio')?.invalid && updateTecnico.get('domicilio')?.touched" class="text-red-500 text-sm mt-1">
               <span *ngIf="updateTecnico.get('domicilio')?.hasError('required')">El domicilio es obligatorio.</span>
             </div>
           </div>
-          <div class="flex justify-end gap-2">
-            <p (click)="hideModal()" class="text-sm px-6 py-2 bg-gray-500 text-white hover:bg-gray-400 rounded-lg hover:text-black hover:cursor-pointer">Cancelar</p>
-            <button type="submit" class="text-sm px-6 py-2 bg-sky-600 text-white hover:bg-sky-500 rounded-lg hover:text-black">Actualizar</button>
-          </div>
         </div>
-      </form>      
-    </div>
+        <div class="flex justify-end gap-2">
+          <button (click)="hideModal()" class="text-sm px-6 py-2 bg-gray-500 text-white hover:bg-gray-400 rounded-lg hover:text-black hover:cursor-pointer mt-1">Cancelar</button>
+          <div class="flex mt-1">
+            <button type="submit" class="text-sm px-6 py-2 bg-gradient-to-r from-purple-900 to-purple-800 text-white rounded-md hover:from-sky-700 hover:to-sky-500">
+              Actualizar
+            </button>
+          </div>  
+        </div>
+      </div>
+    </form>      
+  </div>
 </div>
-  

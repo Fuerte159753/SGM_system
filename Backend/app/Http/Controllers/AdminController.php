@@ -6,6 +6,7 @@ use App\Models\Administrador;
 use App\Models\Equipo;
 use App\Models\Tecnico;
 use App\Models\EquipoAsignado;
+use App\Models\FotoEquipo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -179,9 +180,9 @@ class AdminController extends Controller
         $tecnico->token = Str::random(20);
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            $nombreArchivo = 'foto_' . $tecnico->nombre . '_' . $tecnico->apellidos . '.' . $file->getClientOriginalExtension();
+            $nombreArchivo = 'foto_' . str_replace(' ', '_', $tecnico->nombre) . '_' . str_replace(' ', '_', $tecnico->apellidos) . '.' . $file->getClientOriginalExtension();
             $rutaArchivo = $file->storeAs('public/fotos_tecnicos', $nombreArchivo);
-            $tecnico->foto = Storage::url($rutaArchivo);
+            $tecnico->foto = str_replace('public/', '', $rutaArchivo);
         }
 
         if ($tecnico->save()) {
@@ -242,6 +243,7 @@ class AdminController extends Controller
     }
     public function newEquipo(Request $request)
     {
+        // Validar los datos del formulario
         $validator = Validator::make($request->all(), [
             'idequipo' => 'required|string|max:6|unique:equipos,id',
             'marca' => 'required|string',
@@ -250,14 +252,20 @@ class AdminController extends Controller
             'ram' => 'required|string',
             'procesador' => 'required|string',
             'almacenamiento' => 'required|string',
-            'tipo'=>'required|string|max:1'
+            'tipo' => 'required|string|max:1',
+            'imagen_1' => 'nullable|image|max:2048',
+            'imagen_2' => 'nullable|image|max:2048',
+            'imagen_3' => 'nullable|image|max:2048',
+            'imagen_4' => 'nullable|image|max:2048',
         ]);
+    
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
                 'errors' => $validator->errors(),
             ], 400);
         }
+    
         $equipo = new Equipo;
         $equipo->id = $request->idequipo;
         $equipo->marca = $request->marca;
@@ -267,22 +275,64 @@ class AdminController extends Controller
         $equipo->procesador = $request->procesador;
         $equipo->almacenamiento = $request->almacenamiento;
         $equipo->tipo = $request->tipo;
-        //$equipo->comentarios= false;
-        $equipo->estado= false;
-        $equipo->foto= false;
-
-        if ($equipo->save()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Equipo registrado correctamente',
-            ], 201);
-        } else {
+        $equipo->estado = false;
+    
+        // Guardar el equipo
+        if (!$equipo->save()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'No se pudo registrar el Equipo. Inténtalo más tarde.',
+                'message' => 'No se pudo registrar el equipo. Inténtalo más tarde.',
             ], 500);
         }
-    }
+    
+        // Almacenar imágenes si existen
+        $imagenes = [];
+    
+        for ($i = 1; $i <= 4; $i++) {
+            $imagen = $request->file("imagen_$i");
+            if ($imagen) {
+                // Verificar el tipo MIME y la extensión del archivo
+                $mimeType = $imagen->getMimeType();
+                $validMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    
+                if (!in_array($mimeType, $validMimeTypes)) {
+                    // Eliminar el equipo si el archivo no es una imagen válida
+                    $equipo->delete();
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Uno o más archivos no son imágenes válidas. Operación cancelada.',
+                    ], 400);
+                }
+    
+                $extension = $imagen->getClientOriginalExtension();
+                if (!in_array($extension, ['jpeg', 'jpg', 'png', 'gif'])) {
+                    // Eliminar el equipo si la extensión no es válida
+                    $equipo->delete();
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Uno o más archivos tienen una extensión no válida. Operación cancelada.',
+                    ], 400);
+                }
+    
+                $nombreArchivo = "equipo_{$equipo->id}_$i.$extension";
+                $rutaArchivo = $imagen->storeAs('public/imagenes_equipos', $nombreArchivo);
+                $imagenes[] = [
+                    'equipo_id' => $equipo->id,
+                    'url' => 'imagenes_equipos/' . $nombreArchivo,
+                ];
+            }
+        }
+    
+        // Insertar datos de las imágenes en la base de datos si existen
+        if (!empty($imagenes)) {
+            FotoEquipo::insert($imagenes);
+        }
+    
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Equipo registrado correctamente',
+        ], 201);
+    }    
     public function showEquipoCorectivo()
     {
         try {
@@ -491,7 +541,7 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'telefono' => 'required|max:10',
+            'telefono' => 'required|string|max:12',
             'domicilio' => 'required|string|max:255',
             'correo' => 'required|email|ends_with:@gmail.com,@hotmail.com,@outlook.com',
         ]);
@@ -535,22 +585,24 @@ class AdminController extends Controller
     {
         // Validar la solicitud
         $request->validate([
-            'id' => 'required|exists:administrador,id', // Validar que el ID sea un entero y exista en la tabla
+            'id' => 'required|exists:administrador,id', // Validar que el ID exista en la tabla
             'nombreFoto' => 'required|string',
             'foto' => 'required|file|mimes:svg,png,jpg,gif|max:2048', // Validar el archivo
         ]);
+    
         $admin = Administrador::find($request->input('id'));
-
+    
         if (!$admin) {
             return response()->json(['status' => 'error', 'message' => 'Administrador no encontrado']);
         }
-
+    
         $file = $request->file('foto');
         $nombreArchivo = 'admin_' . $admin->id . '.' . $file->getClientOriginalExtension();
+    
         if ($admin->foto) {
             $oldPhotoBaseName = 'admin_' . $admin->id;
             $files = Storage::files('public/fotos_administradores');
-
+    
             foreach ($files as $filePath) {
                 $fileName = basename($filePath);
                 if (strpos($fileName, $oldPhotoBaseName) === 0) {
@@ -560,12 +612,13 @@ class AdminController extends Controller
                 }
             }
         }
-
+    
         $rutaArchivo = $file->storeAs('public/fotos_administradores', $nombreArchivo);
-        $admin->foto = Storage::url($rutaArchivo);
+        $admin->foto = str_replace('public/', '', $rutaArchivo);
         $admin->save();
+    
         return response()->json(['status' => 'success', 'message' => 'Foto actualizada exitosamente']);
-    }
+    }    
     public function getPhoto($id)
     {
         try {
@@ -586,4 +639,28 @@ class AdminController extends Controller
             ], 500);
         }
     }
+    public function updateComentario(Request $request)
+    {
+        // Validar los datos recibidos
+        $validatedData = $request->validate([
+            'comentario' => 'required|string|min:10',
+            'id' => 'required|string|exists:equipos_asignados,id',
+        ]);
+        $equipoAsignado = EquipoAsignado::find($validatedData['id']);
+    
+        if ($equipoAsignado) {
+            $equipoAsignado->comentarios_Admin = $validatedData['comentario'];
+            $equipoAsignado->save(); 
+    
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Comentario actualizado correctamente.'
+            ]);
+        }
+    
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No se encontró el equipo asignado.'
+        ]);
+    }    
 }

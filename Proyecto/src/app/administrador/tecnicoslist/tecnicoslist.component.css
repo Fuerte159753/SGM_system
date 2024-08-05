@@ -1,40 +1,33 @@
-/* equipo-list.component.css */
-
-/* Estilos para el contenedor relativo */
-.group {
-  display: inline-block;
-  position: relative;
+.alto{
+  height: .1rem;
+}
+/* Estilos para el paginador de Angular Material */
+::ng-deep .mat-paginator {
+  background-color: white;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para el tooltip */
-.group:hover .group-hover\:block {
-  display: block;
+::ng-deep .mat-paginator-page-size-label,
+::ng-deep .mat-paginator-range-label {
+  font-size: 12px;
+  color: #000; /* Color del texto */
 }
 
-.tooltip {
-    width: 50%;
-  position: absolute;
-  left: 100%; /* Posiciona el tooltip a la derecha de la imagen */
-  top: 50%; /* Centra verticalmente */
-  transform: translateY(-50%);
-  margin-left: 0.5rem; /* Espacio entre la imagen y el tooltip */
-  display: none; /* Oculto por defecto */
-  background-color: #333; /* Fondo oscuro */
-  color:#fff; /* Texto blanco */
-  font-size: 0.75rem; /* Tamaño de texto pequeño */
-  padding: 0.25rem 0.5rem; /* Espaciado interno */
-  border-radius: 0.25rem; /* Bordes redondeados */
-  width: 12rem; /* Ancho fijo del tooltip */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para el tooltip */
-  z-index: 10; /* Coloca el tooltip sobre otros elementos */
+::ng-deep .mat-paginator-icon {
+  font-size: 16px;
+  color: #000; /* Color de los iconos */
 }
 
-/* Circulo verde para el estado activo */
-.tooltip .status-circle {
-  display: inline-block;
-  width: 0.5rem;
-  height: 0.5rem;
-  background-color: #22c55e; /* Verde para indicar estado activo */
-  border-radius: 50%;
-  margin-left: 0.25rem; /* Espacio entre el texto y el círculo */
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0; /* Ajuste de padding para el campo de selección de tamaño de página */
+}
+
+::ng-deep .mat-select-value-text {
+  color: #000; /* Color del texto en el selector de tamaño de página */
+}
+
+::ng-deep .mat-option-text {
+  color: #000; /* Color del texto de las opciones en el selector de tamaño de página */
 }

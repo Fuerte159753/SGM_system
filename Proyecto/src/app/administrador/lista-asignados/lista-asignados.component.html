@@ -1,6 +1,129 @@
 <div class="max-w-screen-lg mx-auto p-6">
-    <h1 class="text-2xl font-bold text-center mb-4">Equipos Asignados a tecnicos</h1>
-    <div class="flex justify-end mb-4">
+  <h1 class="text-2xl font-bold text-center mb-4">Equipos Asignados a Técnicos</h1>
+  <div class="flex justify-end mb-4">
+    <!-- Puedes añadir botones u otras acciones aquí si es necesario -->
+  </div>
+  <div class="container mx-auto px-4 py-8">
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white rounded-t-lg text-center">
+        <thead class="bg-gradient-to-t from-purple-950 to-gray-800 text-white rounded-t-lg">
+          <tr>
+            <th class="py-4 px-6 border-b border-gray-200 rounded-tl-lg">Equipo</th>
+            <th class="py-4 px-6 border-b border-gray-200">Técnico</th>
+            <th class="py-4 px-6 border-b border-gray-200">Estatus</th>
+            <th class="py-4 px-6 border-b border-gray-200">Fecha Actualización</th>
+            <th class="py-4 px-6 border-b border-gray-200 rounded-tr-lg">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let equipo of equiposAsignados" class="border-b border-gray-400">
+            <td class="py-4 px-6">{{ equipo.id_equipo.marca }} {{ equipo.id_equipo.modelo }}</td>
+            <td class="py-4 px-6">{{ equipo.id_tecnico.nombre }} {{ equipo.id_tecnico.apellidos }}</td>
+            <td class="py-4 px-6">
+              <ng-container [ngSwitch]="equipo.estatus">
+                <span *ngSwitchCase="0" class="text-blue-600">Asignado</span>
+                <span *ngSwitchCase="1" class="text-amber-600">Mantenimiento en Progreso</span>
+                <span *ngSwitchCase="2" class="text-green-600">Mantenimiento Completo</span>
+                <span *ngSwitchCase="3" class="text-red-600">Incidente o Cancelado</span>
+                <span *ngSwitchDefault class="text-gray-600">Desconocido</span>
+              </ng-container>
+            </td>
+            <td class="py-4 px-6">{{ equipo.estatus_updated_at | date:'short' }}</td>
+            <td class="py-4 px-6">
+              <span class="text-teal-600 hover:cursor-pointer text-base" (click)="openModal(equipo)">ver más</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="modal-asignar" [class.hidden]="!isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
+  <div class="fixed inset-0 bg-gray-800 bg-opacity-50" (click)="closeModal()"></div>
+  <div class="relative bg-white rounded-lg shadow p-6 w-full max-w-lg z-10">
+    <div class="flex justify-between items-center border-b pb-4">
+      <h3 class="text-xl font-semibold text-gray-900">Detalles del Equipo</h3>
+      <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">
+        <i class="bi bi-x-lg w-6 h-6"></i>
+      </button>
+    </div>
+    <div *ngIf="equiposele && equiposele.estatus === equiposele.estatus_anterior" class="bg-yellow-100 text-yellow-800 p-4 rounded-md mb-4">
+      Este equipo no ha tenido cambios recientemente
+    </div>
+    <form *ngIf="equiposele">
+      <div class="py-4">
+        <div class="mt-2">
+          <label for="comentarios_admin" class="block text-sm font-medium text-gray-700">Comentarios del Administrador:</label>
+          <!-- Mostrar mensaje si el comentario del admin es 0 o vacío -->
+          <div *ngIf="equiposele.comentarios_Admin === '0' || !equiposele.comentarios_Admin" class="bg-blue-100 text-purple-900 p-4 rounded-md mb-4 flex items-center">
+            <span class="hover:cursor-pointer" (click)="openModal2(equiposele.id)"><i class="bi bi-pencil-square mr-2"></i></span>
+            <span>El administrador no agregó ningún comentario</span>
+          </div>
+          <!-- Mostrar el contenido del comentario solo si es diferente de 0 -->
+          <div *ngIf="equiposele.comentarios_Admin && equiposele.comentarios_Admin !== '0'" class="flex items-center">
+            <span class="hover:cursor-pointer hover:text-purple-800" (click)="openModal2(equiposele.id)"><i class="bi bi-pencil-square mr-2"></i></span>
+            <p id="comentarios_admin" class="mt-1 block w-full px-3 py-2 text-gray-900 text-base">
+              {{ equiposele.comentarios_Admin }}
+            </p>
+          </div>
+        </div>
+        <div class="mt-2">
+          <label for="comentarios_tecnico" class="block text-sm font-medium text-gray-700">Comentarios del Técnico:</label>
+          <p *ngIf="equiposele.comentarios_Tecnico && equiposele.comentarios_Tecnico !=='0'" id="comentarios_tecnico" class="mt-1 ml-11 block w-full px-3 py-2 text-gray-900 text-base">
+            {{ equiposele.comentarios_Tecnico }}
+          </p>
+          <div *ngIf="equiposele.comentarios_Tecnico === '0' || !equiposele.comentarios_Admin" class="bg-blue-100 text-purple-900 p-4 rounded-md mb-4">
+            El Tecnico aún no agrego comentarios.
+          </div>
+        </div>
+        <div class="mt-2">
+          <label for="estatus_anterior" class="block text-sm font-medium text-gray-700">Estatus Anterior: </label>
+          <ng-container [ngSwitch]="equiposele.estatus_anterior">
+            <span *ngSwitchCase="0" class="text-blue-600 text-base ml-11">Asignado</span>
+            <span *ngSwitchCase="1" class="text-amber-600 text-base ml-11">Mantenimiento en Progreso</span>
+            <span *ngSwitchCase="2" class="text-green-600 text-base ml-11">Mantenimiento Completo</span>
+            <span *ngSwitchCase="3" class="text-red-600 text-base ml-11">Incidente o Cancelado</span>
+            <span *ngSwitchDefault class="text-gray-600 text-base ml-11">Desconocido</span>
+          </ng-container>
+        </div>
+      </div>
+      <div class="flex justify-end space-x-4 pt-4 border-t">
+        <button type="button" (click)="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Cerrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="modal-asignar" [class.hidden]="!isModalOpen2" class="fixed inset-0 flex items-center justify-center z-50">
+  <div class="fixed inset-0 bg-gray-800 bg-opacity-50" (click)="closeModal2()"></div>
+  <div class="relative bg-white rounded-lg shadow p-6 w-full max-w-lg z-10">
+    <div class="flex justify-between items-center border-b pb-4">
+      <h3 class="text-xl font-semibold text-gray-900">Cambiar Comentario</h3>
+      <button (click)="closeModal2()" class="text-gray-500 hover:text-gray-700">
+        <i class="bi bi-x-lg w-6 h-6"></i>
+      </button>
+    </div>
+    <form [formGroup]="updateComentarios" (ngSubmit)="updatecomentario()">
+      <div class="py-4">
+        <div class="mt-4">
+          <label for="comentario" class="block text-sm font-medium text-gray-700 mb-1">Nuevos comentarios del administrador</label>
+          <input type="text" formControlName="comentario" id="comentario" placeholder="Agrega nuevos comentarios" 
+            class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-sm" />
+          <div *ngIf="updateComentarios.controls['comentario'].invalid && updateComentarios.controls['comentario'].touched" 
+            class="text-red-500 text-sm mt-1">
+            {{ updateComentarios.controls['comentario'].hasError('required') ? 'Ingresa un comentario.' : 'Realiza un comentario más largo.' }}
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-end space-x-4 pt-4 border-t">
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">Actualizar</button>
+        <button type="button" (click)="closeModal2()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
         <!--
         <div class="flex items-center bg-white border border-gray-300 rounded-lg px-3 py-2 space-x-2">
             <i class="bi bi-search text-gray-600 text-lg"></i>
@@ -10,63 +133,3 @@
                 <option value="correo">Buscar por Correo</option>
             </select>
         </div>-->
-    </div>
-
-    <div class="container mx-auto px-4 py-8">
-        <div class="overflow-x-auto">
-          <table class="min-w-full bg-white">
-            <thead>
-              <tr>
-                <th class="py-2 px-4 border-b border-gray-200">Equipo</th>
-                <th class="py-2 px-4 border-b border-gray-200">Técnico</th>
-                <th class="py-2 px-4 border-b border-gray-200">Estatus</th>
-                <th class="py-2 px-4 border-b border-gray-200">Comentarios Técnico</th>
-                <th class="py-2 px-4 border-b border-gray-200">Comentarios Admin</th>
-                <th class="py-2 px-4 border-b border-gray-200">Fecha Actualización</th>
-                <th class="py-2 px-4 border-b border-gray-200">Estatus Anterior</th>
-                <th class="py-2 px-4 border-b border-gray-200">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let equipo of equiposAsignados" class="border-b border-gray-200">
-                <td class="py-2 px-4">{{ equipo.id_equipo.marca }} {{ equipo.id_equipo.modelo }}</td>
-                <td class="py-2 px-4">{{ equipo.id_tecnico.nombre }} {{ equipo.id_tecnico.apellidos }}</td>
-                <td class="py-2 px-4">{{ equipo.estatus }}</td>
-                <td class="py-2 px-4">{{ equipo.comentarios_Tecnico }}</td>
-                <td class="py-2 px-4">{{ equipo.comentarios_Admin }}</td>
-                <td class="py-2 px-4">{{ equipo.estatus_updated_at | date:'short' }}</td>
-                <td class="py-2 px-4">{{ equipo.estatus_anterior }}</td>
-                <td class="py-2 px-4">
-                    <span class="text-teal-500 hover:cursor-pointer" (click)="openModal(equipo)">ver mas</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-</div>
-
-<div id="modal-asignar2" [class.hidden]="!isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
-  <div class="fixed inset-0 bg-gray-800 bg-opacity-50" (click)="closeModal()"></div>
-  <div class="relative bg-white rounded-lg shadow p-6 w-full max-w-sm z-10">
-    <div class="flex justify-between items-center border-b pb-4">
-      <h3 class="text-xl font-semibold text-gray-900">Detalles de el equipo</h3>
-      <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">
-        <i class="bi bi-x-lg w-6 h-6"></i>
-      </button>
-    </div>
-    <form>
-      <div class="py-4">
-        <!-- Aquí puedes agregar texto-->
-         <div class="mt-2">
-            <label for="tecnico">Tecnico asignado</label>
-            <input type="text" name="tecnico"  id="">
-         </div>
-      </div>
-      <div class="flex justify-end space-x-4 pt-4 border-t">
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">Asignar</button>
-        <button type="button" (click)="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Cancelar</button>
-      </div>
-    </form>
-  </div>
-</div>

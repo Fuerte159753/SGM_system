@@ -77,4 +77,8 @@ export class ServiceService {
   getphoto(id: any): Observable<any> {
     return this.http.get<any> (`${this.urll}photo/${id}`);
   }
+  //comentarios update admin
+  comentariosupdate(formData: FormData){
+    return this.http.post<any>(`${this.urll+'comentario'}`, formData)
+  }
 }

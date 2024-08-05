@@ -1,14 +1,13 @@
+.bi-x-lg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+/* Añade esto al archivo de estilos del componente */
+.fixed {
+  z-index: 1050; /* O un valor mayor si es necesario */
+}
 
-#modal-asignar {
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    transform: translateY(100%);
-    opacity: 0;
-    /* Ajuste del color de fondo para overlay */
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-  
-  #modal-asignar.show {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  
+.relative {
+  position: relative;
+  z-index: 1; /* Asegúrate de que el contenedor esté debajo del modal */
+}

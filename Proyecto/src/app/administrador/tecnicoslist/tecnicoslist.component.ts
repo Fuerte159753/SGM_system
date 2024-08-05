@@ -7,17 +7,25 @@ import Swal from 'sweetalert2';
 import { HostListener, ElementRef } from '@angular/core';
 import { FormGroup, FormsModule,ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { emailDomainValidator } from './custom-validators';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-tecnicoslist',
   standalone: true,
-  imports: [NgFor, ReactiveFormsModule, FormsModule, NgIf],
+  imports: [NgFor, ReactiveFormsModule, FormsModule, NgIf, NgxPaginationModule,MatPaginatorModule, RouterLink],
   templateUrl: './tecnicoslist.component.html',
   styleUrl: './tecnicoslist.component.css'
 })
 export class TecnicoslistComponent implements OnInit {
-  tecnicos: any[] = [];
+  tecnicos: any[] = []; // Aquí irán tus datos de técnicos
   filteredTecnicos: any[] = [];
+  paginatedTecnicos: any[] = [];
+  pageSize = 5;
+  pageIndex = 0;
+  length = 0;
   searchTerm: string = '';
   searchField: string = 'nombre';
   private notyf: Notyf;
@@ -26,6 +34,7 @@ export class TecnicoslistComponent implements OnInit {
   updateTecnico:FormGroup;
   mensaje: string = '';
   mensaje2: string = '';
+  p: number = 1; // Página inicial
 
   constructor(private service:ServiceService, private el: ElementRef, private fb:FormBuilder){
     this.notyf = new Notyf({
@@ -64,6 +73,8 @@ export class TecnicoslistComponent implements OnInit {
         }else{
           this.tecnicos = response.data;
           this.filteredTecnicos = this.tecnicos;
+          this.length = this.filteredTecnicos.length;
+          this.paginate();
         }
 
       },
@@ -162,13 +173,26 @@ export class TecnicoslistComponent implements OnInit {
   }
   onSearch(): void {
     if (this.searchTerm.trim() === '') {
-      // Si el término de búsqueda está vacío, mostrar todos los técnicos
       this.filteredTecnicos = this.tecnicos;
     } else {
-      // Filtrar los técnicos basados en el término de búsqueda y el campo seleccionado
       this.filteredTecnicos = this.tecnicos.filter(tecnico =>
         tecnico[this.searchField].toLowerCase().includes(this.searchTerm.toLowerCase())
       );
     }
+    this.length = this.filteredTecnicos.length;
+    this.pageIndex = 0; // Reiniciar a la primera página cuando se realiza una búsqueda
+    this.paginate();
+  }
+
+  handlePageEvent(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.paginate();
+  }
+
+  paginate(): void {
+    const startIndex = this.pageIndex * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedTecnicos = this.filteredTecnicos.slice(startIndex, endIndex);
   }
 }

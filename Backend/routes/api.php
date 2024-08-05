@@ -31,6 +31,7 @@ Route::get('/admin/showpreventivo', [AdminController::class, 'showEquipoPreventi
 Route::get('/admin/listec', [AdminController::class, 'listTecnicos']);
 Route::post('/admin/asignar2', [AdminController::class, 'asignacionM']);
 Route::get('/admin/listasignacion', [AdminController::class, 'showEquiposAsignados']);
+Route::post('/admin/comentario', [AdminController::class, 'updateComentario']);
 
 ///Tecnico\\\\
 Route::post('/Tecnico/obtener', [Tecnicocontroller::class, 'showEquiposAsignados']);

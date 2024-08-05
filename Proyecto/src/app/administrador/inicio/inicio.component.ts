@@ -2,6 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ServiceService } from '../../service/service.service';
+
 interface PieChartData {
   name: string;
   value: number;
@@ -156,4 +157,17 @@ export class InicioComponent {
   percentageTickFormatting(val: number): string {
     return `${val.toFixed(1)}%`;
   }
+  translateX: number = 0;
+  prevSlide() {
+    if (this.translateX < 0) {
+      this.translateX += 100;
+    }
+  }
+
+  nextSlide() {
+    if (this.translateX > -100) {
+      this.translateX -= 100;
+    }
+  }
+  
 }

@@ -466,7 +466,6 @@ class AdminController extends Controller
     public function showEquiposAsignados()
     {
         try {
-            // Obtener todos los equipos asignados con la información del técnico y del equipo
             $equiposAsignados = EquipoAsignado::with(['tecnico', 'equipo'])->get();
 
             // Transformar la colección para incluir los nombres y apellidos del técnico y la marca y modelo del equipo
@@ -662,5 +661,5 @@ class AdminController extends Controller
             'status' => 'error',
             'message' => 'No se encontró el equipo asignado.'
         ]);
-    }    
+    }
 }

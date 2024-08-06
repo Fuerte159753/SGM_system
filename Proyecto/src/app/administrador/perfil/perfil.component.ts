@@ -5,8 +5,6 @@ import { FormGroup, FormsModule, ReactiveFormsModule, FormBuilder, Validators } 
 import { NgIf } from '@angular/common';
 import { emailDomainValidator } from '../tecnicoslist/custom-validators';
 import { Router } from '@angular/router';
-import { response } from 'express';
-import { runInThisContext } from 'node:vm';
 
 @Component({
   selector: 'app-perfil',

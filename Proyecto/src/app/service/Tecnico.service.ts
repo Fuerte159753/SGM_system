@@ -13,4 +13,26 @@ export class TecnicoService{
     obtenerEquipos(id: any){
         return this.http.post<any>(this.urll + 'obtener',{id});
     }
+    empezarMantenimiento(id: any){
+      return this.http.post<any>(this.urll + 'updatestatus',{id});
+    }
+    getphoto(id: any){
+      return this.http.post<any>(this.urll + 'optenerphoto',{id});
+    }
+    terminado(formData: FormData){
+      return this.http.post<any>(`${this.urll+'terminar'}`, formData)
+    }
+    //perfil
+    getAdminById(id: number): Observable<any> {
+      return this.http.get<any>(`${this.urll}perfil/${id}`);
+    }
+    updateAdmin(id: number, data: any): Observable<any> {
+      return this.http.put<any>(`${this.urll+'perfil/'}${id}`, data);
+    }
+    updatepass(id: number, data: any): Observable<any>{
+      return this.http.put<any>(`${this.urll+'perfilpassword/'}${id}`, data)
+    }
+    updateProfilePicture(formData: FormData): Observable<any> {
+      return this.http.post<any>(`${this.urll+'fotoadmin'}`, formData);
+    }
 }

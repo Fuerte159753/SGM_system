@@ -48,7 +48,7 @@
         <i class="bi bi-x-lg w-6 h-6"></i>
       </button>
     </div>
-    <div *ngIf="equiposele && equiposele.estatus === equiposele.estatus_anterior" class="bg-yellow-100 text-yellow-800 p-4 rounded-md mb-4">
+    <div *ngIf="equiposele && equiposele.estatus == equiposele.estatus_anterior" class="bg-yellow-100 text-yellow-800 p-4 rounded-md mb-4">
       Este equipo no ha tenido cambios recientemente
     </div>
     <form *ngIf="equiposele">

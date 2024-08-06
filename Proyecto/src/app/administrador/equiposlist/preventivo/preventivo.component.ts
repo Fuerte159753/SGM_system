@@ -117,6 +117,7 @@ export class PreventivoComponent implements OnInit {
         response=>{
           this.notyf.success('Equipo asignado correctamente.');
           this.closeModal2();
+          this.obtenerE2();
         },error=>{
           this.notyf.error('Hubo un problema al asignar el equipo');
         }

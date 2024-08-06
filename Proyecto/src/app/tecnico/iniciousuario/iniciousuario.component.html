@@ -1,7 +1,7 @@
 <div class="container mx-auto p-4">
-  <h1 class="text-2xl font-bold mb-4">Equipos Asignados</h1>
+  <h1 class="text-2xl font-bold mb-4 text-center">Equipos Asignados</h1>
   @if (lista.length===0) {
-    <div class="h-screen w-5/6 bg-white flex items-center">
+    <div class="h-screen w-5/6 bg-white flex items-center mx-auto">
       <div class="container flex flex-col md:flex-row items-center justify-center px-5 text-gray-700">
         <div class="max-w-md">
           <p class="text-2xl md:text-3xl font-light leading-normal">Estas de suerte, al parecer no tienes equipos asignados el dia de hoy </p>
@@ -13,49 +13,107 @@
       </div>
     </div>
   }@else {
-    <table class="min-w-full bg-white border border-gray-200 text-xs">
-      <thead>
-        <tr class="w-full bg-gray-100">
-          <th class="py-2 px-4 border-b">Equipo</th>
-          <th class="py-2 px-4 border-b">Estatus</th>
-          <th class="py-2 px-4 border-b">Fecha Creación</th>
-          <th class="py-2 px-4 border-b">acciones</th>
+    <table class="min-w-full bg-white rounded-t-lg text-center">
+      <thead class="bg-gradient-to-t from-blue-950 to-blue-800 text-white rounded-t-lg text-sm font-light">
+        <tr>
+          <th class="py-4 px-6 border-b border-gray-200 rounded-tl-lg">Equipo</th>
+          <th class="py-4 px-6 border-b border-gray-200">Estatus</th>
+          <th class="py-4 px-6 border-b border-gray-200">Fecha de Asignación</th>
+          <th class="py-4 px-6 border-b border-gray-200 rounded-tr-lg">Acciones</th>
         </tr>
       </thead>
       <tbody>
         @for (equipo of lista; track $index) {
-        <tr class="border-t">
-          <td class="py-2 px-4">{{ equipo.marca }} {{ equipo.modelo }}</td>
-          <td class="py-2 px-4">{{ equipo.estatus }}</td>
-          <td class="py-2 px-4">{{ equipo.created_at| date:'yyyy-MM-dd HH:mm' }}</td>
-          <td class="py-2 px-4">
-            <span class="text-sky-600 text-sm hover:cursor-pointer" (click)="openModal(equipo)">Detalles</span>
+        <tr class="border-b border-gray-300">
+          <td class="py-4 px-6">{{ equipo.marca }} {{ equipo.modelo }}</td>
+          <td class="py-4 px-6">
+            <ng-container [ngSwitch]="equipo.estatus">
+              <span *ngSwitchCase="0" class="text-blue-600">Nuevo Equipo Asignado</span>
+              <span *ngSwitchCase="1" class="text-amber-600">Iniciaste el mantenimiento</span>
+              <span *ngSwitchCase="2" class="text-green-600">Mantenimiento Completo</span>
+              <span *ngSwitchCase="3" class="text-red-600">Incidente o Cancelado</span>
+              <span *ngSwitchDefault class="text-gray-600">Desconocido</span>
+            </ng-container>
           </td>
+          <td class="py-4 px-6">{{ equipo.created_at | date:'yyyy-MM-dd HH:mm' }}</td>
+          <td class="py-4 px-6">
+            <ng-container *ngIf="equipo.estatus === 0; else detalles">
+              <button class="text-green-600 hover:bg-green-600 hover:text-black hover:cursor-pointer text-base py-1 px-3 border border-teal-600 rounded hover:border-black" (click)="empezarMantenimiento(equipo.id)">
+                Empezar Mantenimiento
+              </button>
+            </ng-container>
+            <ng-template #detalles>
+              <span class="text-teal-600 hover:cursor-pointer text-base" (click)="openModal(equipo)">Detalles</span>
+            </ng-template>
+          </td>
+          
         </tr>
         }
       </tbody>
     </table>
   }
 </div>
-
-<div id="modal-asignar2" [class.hidden]="!isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
+<div id="modal-asignar" [class.hidden]="!isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
   <div class="fixed inset-0 bg-gray-800 bg-opacity-50" (click)="closeModal()"></div>
-  <div class="relative bg-white rounded-lg shadow p-6 w-full max-w-sm z-10">
+  <div class="relative bg-white rounded-lg shadow p-6 w-full max-w-lg z-10">
     <div class="flex justify-between items-center border-b pb-4">
-      <h3 class="text-xl font-semibold text-gray-900">Asignar Equipo</h3>
+      <h3 class="text-xl font-semibold text-gray-900">Detalles del Equipo</h3>
       <button (click)="closeModal()" class="text-gray-500 hover:text-gray-700">
         <i class="bi bi-x-lg w-6 h-6"></i>
       </button>
     </div>
-    <form>
-      <div class="py-4">
-        <label for="id_tecnico" class="block text-sm font-medium leading-6 text-gray-900">Selecciona un técnico</label>
-        <!-- Aquí puedes agregar un select o input para seleccionar al técnico -->
+    <div class="py-4">
+      <div *ngIf="equipoSeleccionado">
+        <!-- Comentarios del Administrador -->
+        <div class="mt-2">
+          <label for="comentarios_admin" class="block text-sm font-medium text-gray-700">Comentarios del Administrador:</label>
+          
+          <!-- Mostrar mensaje si el comentario del admin es 0 o vacío -->
+          <div *ngIf="equipoSeleccionado.comentarios_Admin === '0' || !equipoSeleccionado.comentarios_Admin" class="bg-blue-100 text-purple-900 p-4 rounded-md mb-4">
+            <span>El administrador no agregó ningún comentario</span>
+          </div>
+          
+          <!-- Mostrar el contenido del comentario solo si es diferente de 0 -->
+          <div *ngIf="equipoSeleccionado.comentarios_Admin && equipoSeleccionado.comentarios_Admin !== '0'" class="flex items-center">
+            <p id="comentarios_admin" class="mt-1 block w-full px-3 py-2 text-gray-900 text-base">
+              {{ equipoSeleccionado.comentarios_Admin }}
+            </p>
+          </div>
+        </div>
+        
+        <!-- Sección de Fotos -->
+        <div *ngIf="equipoSeleccionado.fotos.length > 0">
+          <p class="text-gray-700 mb-2"><strong>Fotos:</strong></p>
+          <div class="flex flex-wrap gap-4">
+            <img *ngFor="let foto of equipoSeleccionado.fotos" [src]="'http://127.0.0.1:8000/' + foto" class="h-24 w-24 object-cover rounded-lg" alt="Foto del equipo">
+          </div>
+        </div>
+        <div *ngIf="equipoSeleccionado.fotos.length === 0" class="text-gray-700">
+          No hay fotos disponibles.
+        </div>
+        
+        <div *ngIf="equipoSeleccionado.estatus === 1">
+          <form [formGroup]="comentarioForm" (ngSubmit)="onSubmit()">
+            <!-- Agregar Comentarios -->
+            <div class="mt-4">
+              <label for="nuevo_comentario" class="block text-sm font-medium text-gray-700">Agrega tus comentarios:</label>
+              <textarea id="nuevo_comentario" formControlName="nuevo_comentario" rows="4" class="block w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+              <div *ngIf="comentarioForm.controls['nuevo_comentario'].invalid && comentarioForm.controls['nuevo_comentario'].touched" 
+              class="text-red-500 text-sm mt-1">
+                {{ comentarioForm.controls['nuevo_comentario'].hasError('required') ? 'Ingresa un comentario.' : 'Realiza un comentario más largo.' }}
+              </div>
+            </div>
+            <div class="text-end mt-7">
+              <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700">Terminar Mantenimiento</button>
+            </div>
+          </form>
+        </div>
+
       </div>
-      <div class="flex justify-end space-x-4 pt-4 border-t">
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">Asignar</button>
-        <button type="button" (click)="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Cancelar</button>
-      </div>
-    </form>
+    </div>
+    <div class="flex justify-end space-x-4 pt-4 border-t">
+      <button (click)="generarPDF()"  class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">Generar Reporte</button><!---->
+      <button (click)="closeModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Cerrar</button>
+    </div>
   </div>
 </div>

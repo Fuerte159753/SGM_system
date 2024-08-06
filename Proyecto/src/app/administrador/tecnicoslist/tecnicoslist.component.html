@@ -34,7 +34,7 @@
             <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
               <div class="relative group inline-block">
                 <img class="object-cover w-full h-full rounded-full hover:cursor-pointer" 
-                     [src]="(tecnico.foto && tecnico.foto !== '0') ? 'http://127.0.0.1:8000' + tecnico.foto : 'http://127.0.0.1:8000/storage/fotos_tecnicos/random.png'" 
+                     [src]="(tecnico.foto && tecnico.foto !== '0') ? 'http://127.0.0.1:8000/storage' + tecnico.foto : 'http://127.0.0.1:8000/storage/fotos_tecnicos/random.png'" 
                      alt="Foto de {{ tecnico.nombre }} {{ tecnico.apellidos }}" 
                      loading="lazy">
                 <div *ngIf="tecnico.estado == 1" class="tooltip absolute right-0 top-1/2 transform translate-x-full -translate-y-1/2 hidden group-hover:block bg-gray-200 text-black text-xs rounded py-1 px-2 z-10 w-28 shadow-lg">

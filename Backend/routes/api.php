@@ -35,6 +35,13 @@ Route::post('/admin/comentario', [AdminController::class, 'updateComentario']);
 
 ///Tecnico\\\\
 Route::post('/Tecnico/obtener', [Tecnicocontroller::class, 'showEquiposAsignados']);
+Route::post('/Tecnico/updatestatus', [Tecnicocontroller::class, 'cambiarestado']);
+Route::post('/Tecnico/optenerphoto', [Tecnicocontroller::class, 'photo']);
+Route::post('Tecnico/terminar', [Tecnicocontroller::class, 'updateComentario']);
+Route::get('/Tecnico/perfil/{id}', [Tecnicocontroller::class, 'getAdminById']);
+Route::put('/Tecnico/perfil/{id}', [Tecnicocontroller::class, 'updateAdmin']);
+Route::put('/Tecnico/perfilpassword/{id}', [Tecnicocontroller::class, 'updatePasswordAdmin']);
+Route::post('/Tecnico/fotoadmin', [Tecnicocontroller::class, 'updatePhoto']);
 //Graficas\\
 Route::get('admin/graficaequipo', [AdminController::class, 'graficaequipos']);
 Route::get('admin/graficatecnico', [AdminController::class, 'graficatecnico']);

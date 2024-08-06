@@ -114,6 +114,7 @@ export class CorrectivoComponent implements OnInit {
         response=>{
           this.notyf3.success('Equipo asignado correctamente.');
           this.closeModal();
+          this.obtenerE();
         },error=>{
           this.notyf3.error('Hubo un problema al asignar el equipo');
         }

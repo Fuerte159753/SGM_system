@@ -27,7 +27,6 @@ class Equipo extends Model
         'procesador',
         'almacenamiento',
         'tipo',
-        //'comentarios'
         'estado',
         'foto',
     ];

@@ -16,6 +16,7 @@ import { RecoverpasswordComponent } from './recoverpassword/recoverpassword.comp
 import { ListaAsignadosComponent } from './administrador/lista-asignados/lista-asignados.component';
 import { PerfilComponent } from './administrador/perfil/perfil.component';
 import { PerfiltecComponent } from './tecnico/perfiltec/perfiltec.component';
+import { HistorialComponent } from './tecnico/historial/historial.component';
 
 export const routes: Routes = [
     { path: 'Login', component: LoginComponent },
@@ -26,6 +27,7 @@ export const routes: Routes = [
         { path: 'inicio', component: IniciousuarioComponent },
         { path: 'perfil', component: PerfiltecComponent},
         { path: '', redirectTo: 'inicio', pathMatch: 'full' },
+        { path: 'historial', component: HistorialComponent},
     ],},
 
     ///rutas admin\\\
